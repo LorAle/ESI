@@ -1,0 +1,3 @@
+@Imports ESI_WebAPi.Areas.HelpPage.ModelDescriptions
+@ModelType SimpleTypeModelDescription
+@Model.Documentation
