@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace ESI_Web_Api
 {
@@ -9,11 +10,18 @@ namespace ESI_Web_Api
     {
         public static void Register(HttpConfiguration config)
         {
+            //CORS
+            EnableCorsAttribute cors = new EnableCorsAttribute("*", "*", "*");
+            cors.SupportsCredentials = true;
+            config.EnableCors(cors);
+
             // Web API configuration and services
 
             // Web API routes
             config.MapHttpAttributeRoutes();
-            config.EnableCors();
+            
+
+
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",

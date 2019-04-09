@@ -12,7 +12,6 @@ namespace ESI_Web_Api.Controllers
 {
     [Authorize]
     [RoutePrefix("product")]
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ESIController : ApiController
     {
         IProductProvider _context;
