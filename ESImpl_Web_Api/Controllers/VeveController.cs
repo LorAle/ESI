@@ -20,7 +20,7 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         [HttpGet]
-        [Route("")]
+        [Route("getCustomers")]
         public IEnumerable<CustomerModel> GetCustomers()
         {
             return this._context.GetCustomers();
