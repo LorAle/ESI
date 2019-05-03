@@ -26,6 +26,5 @@ namespace MAWI_Context
         }
     
         public DbSet<Supplier> Supplier { get; set; }
-        public DbSet<Material> Material {get; set; }
     }
 }
