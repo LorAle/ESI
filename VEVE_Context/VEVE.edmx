@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="VEVEModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CUSTOMERS">
+          <Key>
+            <PropertyRef Name="CUSTID" />
+          </Key>
+          <Property Name="CUSTID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LASTNAME" Type="varchar" MaxLength="45" />
+          <Property Name="PRENAME" Type="varchar" MaxLength="45" />
+          <Property Name="STREET" Type="varchar" MaxLength="45" />
+          <Property Name="POSTCODE" Type="varchar" MaxLength="45" />
+          <Property Name="CITY" Type="varchar" MaxLength="45" />
+          <Property Name="COUNTRY" Type="varchar" MaxLength="45" />
+          <Property Name="BUSINESSPARTNER" Type="tinyint" />
+        </EntityType>
+        <EntityType Name="CUSTORDER">
+          <Key>
+            <PropertyRef Name="CUSTORDERID" />
+          </Key>
+          <Property Name="CUSTORDERID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CUSTID" Type="int" Nullable="false" />
+          <Property Name="DATE" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="ORDERITEMS">
+          <Key>
+            <PropertyRef Name="ITEMID" />
+          </Key>
+          <Property Name="ITEMID" Type="int" Nullable="false" />
+          <Property Name="CUSTORDERID" Type="int" Nullable="false" />
+          <Property Name="ARTICLENUMBER" Type="int" Nullable="false" />
+          <Property Name="COLORCODE" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="QUANTITY" Type="int" />
+          <Property Name="COLORNAME" Type="varchar" MaxLength="45" />
+          <Property Name="HASPRINT" Type="tinyint" Nullable="false" />
+          <Property Name="PRINTNUMBER" Type="int" />
+        </EntityType>
+        <Association Name="FK_CUSTOMER">
+          <End Role="CUSTOMERS" Type="Self.CUSTOMERS" Multiplicity="1" />
+          <End Role="CUSTORDER" Type="Self.CUSTORDER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CUSTOMERS">
+              <PropertyRef Name="CUSTID" />
+            </Principal>
+            <Dependent Role="CUSTORDER">
+              <PropertyRef Name="CUSTID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CUSTORDER">
+          <End Role="CUSTORDER" Type="Self.CUSTORDER" Multiplicity="1" />
+          <End Role="ORDERITEMS" Type="Self.ORDERITEMS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CUSTORDER">
+              <PropertyRef Name="CUSTORDERID" />
+            </Principal>
+            <Dependent Role="ORDERITEMS">
+              <PropertyRef Name="CUSTORDERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VEVEModelStoreContainer">
+          <EntitySet Name="CUSTOMERS" EntityType="Self.CUSTOMERS" Schema="VEVE" store:Type="Tables" />
+          <EntitySet Name="CUSTORDER" EntityType="Self.CUSTORDER" Schema="VEVE" store:Type="Tables" />
+          <EntitySet Name="ORDERITEMS" EntityType="Self.ORDERITEMS" Schema="VEVE" store:Type="Tables" />
+          <AssociationSet Name="FK_CUSTOMER" Association="Self.FK_CUSTOMER">
+            <End Role="CUSTOMERS" EntitySet="CUSTOMERS" />
+            <End Role="CUSTORDER" EntitySet="CUSTORDER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CUSTORDER" Association="Self.FK_CUSTORDER">
+            <End Role="CUSTORDER" EntitySet="CUSTORDER" />
+            <End Role="ORDERITEMS" EntitySet="ORDERITEMS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="VEVEModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CUSTOMERS">
+          <Key>
+            <PropertyRef Name="CUSTID" />
+          </Key>
+          <Property Name="CUSTID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LASTNAME" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="PRENAME" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="STREET" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="POSTCODE" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="CITY" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="COUNTRY" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="BUSINESSPARTNER" Type="SByte" />
+          <NavigationProperty Name="CUSTORDER" Relationship="Self.FK_CUSTOMER" FromRole="CUSTOMERS" ToRole="CUSTORDER" />
+        </EntityType>
+        <EntityType Name="CUSTORDER">
+          <Key>
+            <PropertyRef Name="CUSTORDERID" />
+          </Key>
+          <Property Name="CUSTORDERID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CUSTID" Type="Int32" Nullable="false" />
+          <Property Name="DATE" Type="DateTime" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="CUSTOMERS" Relationship="Self.FK_CUSTOMER" FromRole="CUSTORDER" ToRole="CUSTOMERS" />
+          <NavigationProperty Name="ORDERITEMS" Relationship="Self.FK_CUSTORDER" FromRole="CUSTORDER" ToRole="ORDERITEMS" />
+        </EntityType>
+        <EntityType Name="ORDERITEMS">
+          <Key>
+            <PropertyRef Name="ITEMID" />
+          </Key>
+          <Property Name="ITEMID" Type="Int32" Nullable="false" />
+          <Property Name="CUSTORDERID" Type="Int32" Nullable="false" />
+          <Property Name="ARTICLENUMBER" Type="Int32" Nullable="false" />
+          <Property Name="COLORCODE" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="QUANTITY" Type="Int32" />
+          <Property Name="COLORNAME" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="HASPRINT" Type="SByte" Nullable="false" />
+          <Property Name="PRINTNUMBER" Type="Int32" />
+          <NavigationProperty Name="CUSTORDER" Relationship="Self.FK_CUSTORDER" FromRole="ORDERITEMS" ToRole="CUSTORDER" />
+        </EntityType>
+        <Association Name="FK_CUSTOMER">
+          <End Role="CUSTOMERS" Type="Self.CUSTOMERS" Multiplicity="1" />
+          <End Role="CUSTORDER" Type="Self.CUSTORDER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CUSTOMERS">
+              <PropertyRef Name="CUSTID" />
+            </Principal>
+            <Dependent Role="CUSTORDER">
+              <PropertyRef Name="CUSTID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CUSTORDER">
+          <End Role="CUSTORDER" Type="Self.CUSTORDER" Multiplicity="1" />
+          <End Role="ORDERITEMS" Type="Self.ORDERITEMS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CUSTORDER">
+              <PropertyRef Name="CUSTORDERID" />
+            </Principal>
+            <Dependent Role="ORDERITEMS">
+              <PropertyRef Name="CUSTORDERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VEVEEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CUSTOMERS" EntityType="Self.CUSTOMERS" />
+          <EntitySet Name="CUSTORDER" EntityType="Self.CUSTORDER" />
+          <EntitySet Name="ORDERITEMS" EntityType="Self.ORDERITEMS" />
+          <AssociationSet Name="FK_CUSTOMER" Association="Self.FK_CUSTOMER">
+            <End Role="CUSTOMERS" EntitySet="CUSTOMERS" />
+            <End Role="CUSTORDER" EntitySet="CUSTORDER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CUSTORDER" Association="Self.FK_CUSTORDER">
+            <End Role="CUSTORDER" EntitySet="CUSTORDER" />
+            <End Role="ORDERITEMS" EntitySet="ORDERITEMS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="VEVEModelStoreContainer" CdmEntityContainer="VEVEEntities">
+          <EntitySetMapping Name="CUSTOMERS">
+            <EntityTypeMapping TypeName="VEVEModel.CUSTOMERS">
+              <MappingFragment StoreEntitySet="CUSTOMERS">
+                <ScalarProperty Name="CUSTID" ColumnName="CUSTID" />
+                <ScalarProperty Name="LASTNAME" ColumnName="LASTNAME" />
+                <ScalarProperty Name="PRENAME" ColumnName="PRENAME" />
+                <ScalarProperty Name="STREET" ColumnName="STREET" />
+                <ScalarProperty Name="POSTCODE" ColumnName="POSTCODE" />
+                <ScalarProperty Name="CITY" ColumnName="CITY" />
+                <ScalarProperty Name="COUNTRY" ColumnName="COUNTRY" />
+                <ScalarProperty Name="BUSINESSPARTNER" ColumnName="BUSINESSPARTNER" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CUSTORDER">
+            <EntityTypeMapping TypeName="VEVEModel.CUSTORDER">
+              <MappingFragment StoreEntitySet="CUSTORDER">
+                <ScalarProperty Name="CUSTORDERID" ColumnName="CUSTORDERID" />
+                <ScalarProperty Name="CUSTID" ColumnName="CUSTID" />
+                <ScalarProperty Name="DATE" ColumnName="DATE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ORDERITEMS">
+            <EntityTypeMapping TypeName="VEVEModel.ORDERITEMS">
+              <MappingFragment StoreEntitySet="ORDERITEMS">
+                <ScalarProperty Name="ITEMID" ColumnName="ITEMID" />
+                <ScalarProperty Name="CUSTORDERID" ColumnName="CUSTORDERID" />
+                <ScalarProperty Name="ARTICLENUMBER" ColumnName="ARTICLENUMBER" />
+                <ScalarProperty Name="COLORCODE" ColumnName="COLORCODE" />
+                <ScalarProperty Name="QUANTITY" ColumnName="QUANTITY" />
+                <ScalarProperty Name="COLORNAME" ColumnName="COLORNAME" />
+                <ScalarProperty Name="HASPRINT" ColumnName="HASPRINT" />
+                <ScalarProperty Name="PRINTNUMBER" ColumnName="PRINTNUMBER" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
