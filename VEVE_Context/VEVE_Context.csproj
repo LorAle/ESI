@@ -62,6 +62,8 @@
     </Compile>
     <Compile Include="IVeveProvider.cs" />
     <Compile Include="Models\CustomerModel.cs" />
+    <Compile Include="Models\CustomerOrderModel.cs" />
+    <Compile Include="Models\OrderItemsModel.cs" />
     <Compile Include="ORDERITEMS.cs">
       <DependentUpon>VEVE.tt</DependentUpon>
     </Compile>

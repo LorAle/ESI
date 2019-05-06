@@ -22,6 +22,7 @@ namespace VEVE_Context
         public int CUSTORDERID { get; set; }
         public int CUSTID { get; set; }
         public Nullable<System.DateTime> DATE { get; set; }
+        public Nullable<int> STATUS { get; set; }
     
         public virtual CUSTOMERS CUSTOMERS { get; set; }
         public virtual ICollection<ORDERITEMS> ORDERITEMS { get; set; }
