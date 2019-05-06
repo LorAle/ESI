@@ -10,5 +10,9 @@ namespace VEVE_Context
     public interface IVeveProvider
     {
         IEnumerable<CustomerModel> GetCustomers();
+
+        IEnumerable<CustomerOrderModel> GetCustomerOrders();
+
+        IEnumerable<CustomerOrderModel> GetOrdersOfCustomer(int customerId);
     }
 }
