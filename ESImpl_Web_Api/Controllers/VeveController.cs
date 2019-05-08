@@ -20,10 +20,24 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         [HttpGet]
-        [Route("")]
+        [Route("customer")]
         public IEnumerable<CustomerModel> GetCustomers()
         {
             return this._context.GetCustomers();
+        }
+
+        [HttpGet]
+        [Route("order")]
+        public IEnumerable<CustomerOrderModel> GetCustomerOrders()
+        {
+            return this._context.GetCustomerOrders();
+        }
+
+        [HttpGet]
+        [Route("customer/{customerId:int}")]
+        public IEnumerable<CustomerOrderModel> GetOrdersOfCustomer(int customerId)
+        {
+            return this._context.GetOrdersOfCustomer(customerId);
         }
     }
 }

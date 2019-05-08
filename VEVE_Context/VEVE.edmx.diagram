@@ -5,11 +5,11 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="7d4f5bed9bb845b2983fd328311084c9" Name="Diagram1">
-        <EntityTypeShape EntityType="VEVEModel.CUSTOMERS" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="VEVEModel.CUSTORDER" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="VEVEModel.ORDERITEMS" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
-        <AssociationConnector Association="VEVEModel.FK_CUSTOMER" ManuallyRouted="false" />
-        <AssociationConnector Association="VEVEModel.FK_CUSTORDER" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="VEVEModel.CUSTOMERS" Width="1.5" PointX="0.75" PointY="1" />
+        <EntityTypeShape EntityType="VEVEModel.CUSTORDER" Width="1.5" PointX="3" PointY="1.25" />
+        <EntityTypeShape EntityType="VEVEModel.ORDERITEMS" Width="1.5" PointX="5.25" PointY="1" />
+        <AssociationConnector Association="VEVEModel.FK_CUSTOMER" />
+        <AssociationConnector Association="VEVEModel.FK_CUSTORDER" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
