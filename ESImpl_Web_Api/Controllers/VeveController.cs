@@ -32,6 +32,18 @@ namespace ESImpl_Web_Api.Controllers
         {
             return this._context.GetCustomerOrders();
         }
+        [HttpGet]
+        [Route("order/new")]
+        public IEnumerable<CustomerOrderModel> GetNewCustomerOrders()
+        {
+            return this._context.GetNewCustomerOrders();
+        }
+        [HttpGet]
+        [Route("order/done")]
+        public IEnumerable<CustomerOrderModel> GetDoneCustomerOrders()
+        {
+            return this._context.GetDoneCustomerOrders();
+        }
 
         [HttpGet]
         [Route("customer/{customerId:int}")]
