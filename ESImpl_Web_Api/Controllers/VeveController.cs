@@ -39,5 +39,12 @@ namespace ESImpl_Web_Api.Controllers
         {
             return this._context.GetOrdersOfCustomer(customerId);
         }
+
+        [HttpPut]
+        [Route("order/{orderId:int}/{statusId:int}")]
+        public IEnumerable<CustomerOrderModel> SetOrderStatus(int orderId, int statusId)
+        {
+            return this._context.SetOrderStatus(orderId,statusId);
+        }
     }
 }

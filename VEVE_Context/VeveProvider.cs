@@ -56,5 +56,18 @@ namespace VEVE_Context
             }
             return new List<CustomerOrderModel>();
         }
+
+        public IEnumerable<CustomerOrderModel> SetOrderStatus(int orderId, int statusId) {
+            //TODO: Geupdatetes Entitiy returnen
+            //TODO: Fehlerfall Nachricht liefern
+
+            var orderFromDB = _context.CUSTORDER.Where(x => x.CUSTORDERID == orderId).SingleOrDefault();
+            if (orderFromDB != null) {
+                orderFromDB.STATUS = statusId;
+                _context.SaveChanges();
+            }
+
+            return new List<CustomerOrderModel>();
+        }
     }
 }
