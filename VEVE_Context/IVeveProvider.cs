@@ -14,6 +14,7 @@ namespace VEVE_Context
         IEnumerable<CustomerOrderModel> GetCustomerOrders();
         IEnumerable<CustomerOrderModel> GetNewCustomerOrders();
         IEnumerable<CustomerOrderModel> GetDoneCustomerOrders();
+        IEnumerable<CustomerOrderModel> DeleteCustomerOrders(int orderId);
 
         IEnumerable<CustomerOrderModel> GetOrdersOfCustomer(int customerId);
 

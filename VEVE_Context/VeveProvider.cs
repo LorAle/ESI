@@ -56,6 +56,16 @@ namespace VEVE_Context
             return new List<CustomerOrderModel>();
         }
 
+        public IEnumerable<CustomerOrderModel> DeleteCustomerOrders(int orderId) {
+            var ordersFromDB = _context.CUSTORDER.Where(x => x.CUSTORDERID == orderId).SingleOrDefault();
+            if (ordersFromDB != null)
+            {
+                _context.CUSTORDER.Remove(ordersFromDB);
+            }
+
+            return new List<CustomerOrderModel>();
+        }
+
         public IEnumerable<CustomerModel> GetCustomers()
         {
             return _context.CUSTOMERS.Select(x => new CustomerModel

@@ -44,6 +44,12 @@ namespace ESImpl_Web_Api.Controllers
         {
             return this._context.GetDoneCustomerOrders();
         }
+        [HttpDelete]
+        [Route("order/{orderId:int}")]
+        public IEnumerable<CustomerOrderModel> DeleteCustomerOrders(int orderId)
+        {
+            return this._context.DeleteCustomerOrders(orderId);
+        }
 
         [HttpGet]
         [Route("customer/{customerId:int}")]
