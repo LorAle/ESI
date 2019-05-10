@@ -60,7 +60,15 @@ namespace VEVE_Context
             var ordersFromDB = _context.CUSTORDER.Where(x => x.CUSTORDERID == orderId).SingleOrDefault();
             if (ordersFromDB != null)
             {
+
+                /*var items = ordersFromDB.ORDERITEMS.Select(x => new OrderItemsModel
+                {
+                    _context.ORDERITEMS.Remove(x)
+                });
+                _context.ORDERITEMS.Remove(items);
+                */
                 _context.CUSTORDER.Remove(ordersFromDB);
+                _context.SaveChanges();
             }
 
             return new List<CustomerOrderModel>();
