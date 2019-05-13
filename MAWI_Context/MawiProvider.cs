@@ -31,6 +31,27 @@ namespace MAWI_Context
             }).ToList();
         }
 
+        public MaterialModel CreateMaterial(MaterialFormModel data)
+        {
+            Material newMaterial = new Material();
+            _context.Material.Add(newMaterial);
+            _context.Entry(newMaterial).CurrentValues.SetValues(data);
+            _context.SaveChanges();
+            return new MaterialModel
+            {
+                MaterialId = newMaterial.MaterialId,
+                SupplierId = newMaterial.SupplierId,
+                DeliveryDate = newMaterial.DeliveryDate,
+                Description = newMaterial.Description,
+                Stock = newMaterial.Stock,
+                Unit = newMaterial.Unit,
+                Price = newMaterial.Price,
+                Supplier = newMaterial.Supplier,
+                Quality = newMaterial.Quality
+            };
+        }
+
+
         public IEnumerable<QualityModel> GetQuality()
         {
             return _context.Quality.Select(x => new QualityModel
@@ -44,6 +65,25 @@ namespace MAWI_Context
                 DeltaE = x.DeltaE,
                 Amount = x.Amount
             }).ToList();
+        }
+
+        public QualityModel CreatQuality(QualityFormModel data)
+        {
+            Quality newQuality = new Quality();
+            _context.Quality.Add(newQuality);
+            _context.Entry(newQuality).CurrentValues.SetValues(data);
+            _context.SaveChanges();
+            return new QualityModel
+            {
+                MaterialId = newQuality.MaterialId,
+                QualityId = newQuality.QualityId,
+                Whiteness = newQuality.Whiteness,
+                Absorbency = newQuality.Absorbency,
+                Viscosity = newQuality.Viscosity,
+                Ppml = newQuality.Ppml,
+                DeltaE = newQuality.DeltaE,
+                Amount = newQuality.Amount
+            };
         }
 
         public IEnumerable<SupplierModel> GetSuppliers()

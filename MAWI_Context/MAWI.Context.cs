@@ -26,6 +26,7 @@ namespace MAWI_Context
         }
     
         public DbSet<Material> Material { get; set; }
+        public DbSet<ProducedProduct> ProducedProduct { get; set; }
         public DbSet<Quality> Quality { get; set; }
         public DbSet<Supplier> Supplier { get; set; }
     }

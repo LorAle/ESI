@@ -17,6 +17,14 @@
           <Property Name="Unit" Type="varchar" MaxLength="255" />
           <Property Name="Price" Type="decimal" Precision="20" Scale="2" />
         </EntityType>
+        <EntityType Name="ProducedProduct">
+          <Key>
+            <PropertyRef Name="ProducedProductId" />
+          </Key>
+          <Property Name="ProducedProductId" Type="int" Nullable="false" />
+          <Property Name="OrderId" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="int" />
+        </EntityType>
         <EntityType Name="Quality">
           <Key>
             <PropertyRef Name="QualityId" />
@@ -70,6 +78,7 @@
         </Association>
         <EntityContainer Name="MAWIModelStoreContainer">
           <EntitySet Name="Material" EntityType="Self.Material" Schema="MAWI" store:Type="Tables" />
+          <EntitySet Name="ProducedProduct" EntityType="Self.ProducedProduct" Schema="MAWI" store:Type="Tables" />
           <EntitySet Name="Quality" EntityType="Self.Quality" Schema="MAWI" store:Type="Tables" />
           <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="MAWI" store:Type="Tables" />
           <AssociationSet Name="Material_ibfk_1" Association="Self.Material_ibfk_1">
@@ -87,6 +96,7 @@
       <Schema Namespace="MAWIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="MAWIEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Material" EntityType="MAWIModel.Material" />
+          <EntitySet Name="ProducedProduct" EntityType="MAWIModel.ProducedProduct" />
           <EntitySet Name="Quality" EntityType="MAWIModel.Quality" />
           <EntitySet Name="Supplier" EntityType="MAWIModel.Supplier" />
           <AssociationSet Name="Material_ibfk_1" Association="MAWIModel.Material_ibfk_1">
@@ -111,6 +121,14 @@
           <Property Name="Price" Type="Decimal" />
           <NavigationProperty Name="Supplier" Relationship="MAWIModel.Material_ibfk_1" FromRole="Material" ToRole="Supplier" />
           <NavigationProperty Name="Quality" Relationship="MAWIModel.Quality_ibfk_1" FromRole="Material" ToRole="Quality" />
+        </EntityType>
+        <EntityType Name="ProducedProduct">
+          <Key>
+            <PropertyRef Name="ProducedProductId" />
+          </Key>
+          <Property Name="ProducedProductId" Type="Int32" Nullable="false" />
+          <Property Name="OrderId" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Int32" />
         </EntityType>
         <EntityType Name="Quality">
           <Key>
@@ -181,6 +199,15 @@
                 <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
                 <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
                 <ScalarProperty Name="MaterialId" ColumnName="MaterialId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProducedProduct">
+            <EntityTypeMapping TypeName="MAWIModel.ProducedProduct">
+              <MappingFragment StoreEntitySet="ProducedProduct">
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="ProducedProductId" ColumnName="ProducedProductId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

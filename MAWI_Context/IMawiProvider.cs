@@ -11,6 +11,9 @@ namespace MAWI_Context
     {
         IEnumerable<SupplierModel> GetSuppliers();
         IEnumerable<MaterialModel> GetMaterial();
+        MaterialModel CreateMaterial(MaterialFormModel data);
         IEnumerable<QualityModel> GetQuality();
+        QualityModel CreatQuality(QualityFormModel data);
+        //IEnumerable<ProducedProduct> GetProducedProduct();
     }
 }
