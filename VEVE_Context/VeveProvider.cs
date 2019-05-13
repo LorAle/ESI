@@ -25,6 +25,26 @@ namespace VEVE_Context
                 STATUS = x.STATUS
             }).ToList();
         }
+
+        public IEnumerable<OrderItemsModel> GetItemsByOrder(int orderId) {
+            var ordersFromDB = _context.CUSTORDER.Where(x => x.CUSTORDERID == orderId).SingleOrDefault();
+            if (ordersFromDB!=null)
+            {
+                return ordersFromDB.ORDERITEMS.Select(x => new OrderItemsModel
+                {
+                    ITEMID = x.ITEMID,
+                    CUSTORDERID = x.CUSTORDERID,
+                    ARTICLENUMBER = x.ARTICLENUMBER,
+                    COLORCODE = x.COLORCODE,
+                    QUANTITY = x.QUANTITY,
+                    COLORNAME = x.COLORNAME,
+                    HASPRINT = x.HASPRINT,
+                    PRINTNUMBER =x.PRINTNUMBER
+
+                }).ToList();
+            }
+            return new List<OrderItemsModel>();
+        }
         public IEnumerable<CustomerOrderModel> GetNewCustomerOrders()
         {
             var ordersFromDB = _context.CUSTORDER.Where(x => x.STATUS == 1);

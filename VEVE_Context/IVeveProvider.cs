@@ -10,6 +10,7 @@ namespace VEVE_Context
     public interface IVeveProvider
     {
         IEnumerable<CustomerModel> GetCustomers();
+        IEnumerable<OrderItemsModel> GetItemsByOrder(int orderId);
 
         IEnumerable<CustomerOrderModel> GetCustomerOrders();
         IEnumerable<CustomerOrderModel> GetNewCustomerOrders();

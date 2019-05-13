@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VEVE_Context.Models
 {
-    class OrderItemsModel
+    public class OrderItemsModel
     {
         public int ITEMID { get; set; }
         public int CUSTORDERID { get; set; }
