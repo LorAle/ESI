@@ -42,7 +42,7 @@ namespace ESImpl_Web_Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("orderitems")]
+        [Route("orderitems/{orderId:int}")]
         public IEnumerable<OrderItemsModel> GetItemsByOrder(int orderId)
         {
             return this._context.GetItemsByOrder(orderId);
