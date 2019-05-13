@@ -4,43 +4,211 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MAWIModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MAWIModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Material">
+          <Key>
+            <PropertyRef Name="MaterialId" />
+          </Key>
+          <Property Name="MaterialId" Type="int" Nullable="false" />
+          <Property Name="SupplierId" Type="int" Nullable="false" />
+          <Property Name="DeliveryDate" Type="date" />
+          <Property Name="Description" Type="varchar" MaxLength="255" />
+          <Property Name="Stock" Type="int" />
+          <Property Name="Unit" Type="varchar" MaxLength="255" />
+          <Property Name="Price" Type="decimal" Precision="20" Scale="2" />
+        </EntityType>
+        <EntityType Name="Quality">
+          <Key>
+            <PropertyRef Name="QualityId" />
+            <PropertyRef Name="MaterialId" />
+          </Key>
+          <Property Name="QualityId" Type="int" Nullable="false" />
+          <Property Name="MaterialId" Type="int" Nullable="false" />
+          <Property Name="Whiteness" Type="int" />
+          <Property Name="Absorbency" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Viscosity" Type="int" />
+          <Property Name="Ppml" Type="int" />
+          <Property Name="DeltaE" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Amount" Type="int" />
+        </EntityType>
         <EntityType Name="Supplier">
           <Key>
             <PropertyRef Name="SupplierId" />
           </Key>
           <Property Name="SupplierId" Type="int" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="45" />
+          <Property Name="Name" Type="varchar" MaxLength="255" />
+          <Property Name="Address" Type="varchar" MaxLength="255" />
+          <Property Name="PLZ" Type="int" />
+          <Property Name="City" Type="varchar" MaxLength="255" />
+          <Property Name="Email" Type="varchar" MaxLength="255" />
+          <Property Name="Contactperson" Type="varchar" MaxLength="255" />
+          <Property Name="Phone" Type="int" />
         </EntityType>
+        <Association Name="Material_ibfk_1">
+          <End Role="Supplier" Type="Self.Supplier" Multiplicity="1" />
+          <End Role="Material" Type="Self.Material" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supplier">
+              <PropertyRef Name="SupplierId" />
+            </Principal>
+            <Dependent Role="Material">
+              <PropertyRef Name="SupplierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Quality_ibfk_1">
+          <End Role="Material" Type="Self.Material" Multiplicity="1" />
+          <End Role="Quality" Type="Self.Quality" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Material">
+              <PropertyRef Name="MaterialId" />
+            </Principal>
+            <Dependent Role="Quality">
+              <PropertyRef Name="MaterialId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="MAWIModelStoreContainer">
+          <EntitySet Name="Material" EntityType="Self.Material" Schema="MAWI" store:Type="Tables" />
+          <EntitySet Name="Quality" EntityType="Self.Quality" Schema="MAWI" store:Type="Tables" />
           <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="MAWI" store:Type="Tables" />
+          <AssociationSet Name="Material_ibfk_1" Association="Self.Material_ibfk_1">
+            <End Role="Supplier" EntitySet="Supplier" />
+            <End Role="Material" EntitySet="Material" />
+          </AssociationSet>
+          <AssociationSet Name="Quality_ibfk_1" Association="Self.Quality_ibfk_1">
+            <End Role="Material" EntitySet="Material" />
+            <End Role="Quality" EntitySet="Quality" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MAWIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="MAWIEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Material" EntityType="MAWIModel.Material" />
+          <EntitySet Name="Quality" EntityType="MAWIModel.Quality" />
+          <EntitySet Name="Supplier" EntityType="MAWIModel.Supplier" />
+          <AssociationSet Name="Material_ibfk_1" Association="MAWIModel.Material_ibfk_1">
+            <End Role="Supplier" EntitySet="Supplier" />
+            <End Role="Material" EntitySet="Material" />
+          </AssociationSet>
+          <AssociationSet Name="Quality_ibfk_1" Association="MAWIModel.Quality_ibfk_1">
+            <End Role="Material" EntitySet="Material" />
+            <End Role="Quality" EntitySet="Quality" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Material">
+          <Key>
+            <PropertyRef Name="MaterialId" />
+          </Key>
+          <Property Name="MaterialId" Type="Int32" Nullable="false" />
+          <Property Name="SupplierId" Type="Int32" Nullable="false" />
+          <Property Name="DeliveryDate" Type="DateTime" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Stock" Type="Int32" />
+          <Property Name="Unit" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Price" Type="Decimal" />
+          <NavigationProperty Name="Supplier" Relationship="MAWIModel.Material_ibfk_1" FromRole="Material" ToRole="Supplier" />
+          <NavigationProperty Name="Quality" Relationship="MAWIModel.Quality_ibfk_1" FromRole="Material" ToRole="Quality" />
+        </EntityType>
+        <EntityType Name="Quality">
+          <Key>
+            <PropertyRef Name="QualityId" />
+            <PropertyRef Name="MaterialId" />
+          </Key>
+          <Property Name="QualityId" Type="Int32" Nullable="false" />
+          <Property Name="MaterialId" Type="Int32" Nullable="false" />
+          <Property Name="Whiteness" Type="Int32" />
+          <Property Name="Absorbency" Type="Decimal" />
+          <Property Name="Viscosity" Type="Int32" />
+          <Property Name="Ppml" Type="Int32" />
+          <Property Name="DeltaE" Type="Decimal" />
+          <Property Name="Amount" Type="Int32" />
+          <NavigationProperty Name="Material" Relationship="MAWIModel.Quality_ibfk_1" FromRole="Quality" ToRole="Material" />
+        </EntityType>
         <EntityType Name="Supplier">
           <Key>
             <PropertyRef Name="SupplierId" />
           </Key>
           <Property Name="SupplierId" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PLZ" Type="Int32" />
+          <Property Name="City" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Contactperson" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="Int32" />
+          <NavigationProperty Name="Material" Relationship="MAWIModel.Material_ibfk_1" FromRole="Supplier" ToRole="Material" />
         </EntityType>
-        <EntityContainer Name="MAWIEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Supplier" EntityType="Self.Supplier" />
-        </EntityContainer>
+        <Association Name="Material_ibfk_1">
+          <End Type="MAWIModel.Supplier" Role="Supplier" Multiplicity="1" />
+          <End Type="MAWIModel.Material" Role="Material" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supplier">
+              <PropertyRef Name="SupplierId" />
+            </Principal>
+            <Dependent Role="Material">
+              <PropertyRef Name="SupplierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Quality_ibfk_1">
+          <End Type="MAWIModel.Material" Role="Material" Multiplicity="1" />
+          <End Type="MAWIModel.Quality" Role="Quality" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Material">
+              <PropertyRef Name="MaterialId" />
+            </Principal>
+            <Dependent Role="Quality">
+              <PropertyRef Name="MaterialId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="MAWIModelStoreContainer" CdmEntityContainer="MAWIEntities">
+          <EntitySetMapping Name="Material">
+            <EntityTypeMapping TypeName="MAWIModel.Material">
+              <MappingFragment StoreEntitySet="Material">
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="Stock" ColumnName="Stock" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+                <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
+                <ScalarProperty Name="MaterialId" ColumnName="MaterialId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Quality">
+            <EntityTypeMapping TypeName="MAWIModel.Quality">
+              <MappingFragment StoreEntitySet="Quality">
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="DeltaE" ColumnName="DeltaE" />
+                <ScalarProperty Name="Ppml" ColumnName="Ppml" />
+                <ScalarProperty Name="Viscosity" ColumnName="Viscosity" />
+                <ScalarProperty Name="Absorbency" ColumnName="Absorbency" />
+                <ScalarProperty Name="Whiteness" ColumnName="Whiteness" />
+                <ScalarProperty Name="MaterialId" ColumnName="MaterialId" />
+                <ScalarProperty Name="QualityId" ColumnName="QualityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Supplier">
             <EntityTypeMapping TypeName="MAWIModel.Supplier">
               <MappingFragment StoreEntitySet="Supplier">
-                <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Contactperson" ColumnName="Contactperson" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="PLZ" ColumnName="PLZ" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

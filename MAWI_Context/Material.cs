@@ -12,22 +12,22 @@ namespace MAWI_Context
     using System;
     using System.Collections.Generic;
     
-    public partial class Supplier
+    public partial class Material
     {
-        public Supplier()
+        public Material()
         {
-            this.Material = new HashSet<Material>();
+            this.Quality = new HashSet<Quality>();
         }
     
+        public int MaterialId { get; set; }
         public int SupplierId { get; set; }
-        public string Name { get; set; }
-        public string Address { get; set; }
-        public Nullable<int> PLZ { get; set; }
-        public string City { get; set; }
-        public string Email { get; set; }
-        public string Contactperson { get; set; }
-        public Nullable<int> Phone { get; set; }
+        public Nullable<System.DateTime> DeliveryDate { get; set; }
+        public string Description { get; set; }
+        public Nullable<int> Stock { get; set; }
+        public string Unit { get; set; }
+        public Nullable<decimal> Price { get; set; }
     
-        public virtual ICollection<Material> Material { get; set; }
+        public virtual Supplier Supplier { get; set; }
+        public virtual ICollection<Quality> Quality { get; set; }
     }
 }
