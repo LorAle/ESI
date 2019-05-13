@@ -4,32 +4,97 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="PRODModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="PRODModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ProductionOrder">
           <Key>
-            <PropertyRef Name="ProductionOrderId" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="ProductionOrderId" Type="int" Nullable="false" />
-          <Property Name="ProductionOrdercol" Type="varchar" MaxLength="45" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerOrderId" Type="int" Nullable="false" />
+          <Property Name="OrderDate" Type="date" />
+          <Property Name="DeliveryDate" Type="date" />
+          <Property Name="Color" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="Motiv" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="Amount" Type="int" Nullable="false" />
+          <Property Name="OrderItem" Type="int" />
+          <Property Name="ProductionStatusId" Type="int" Nullable="false" />
+          <Property Name="OrderPosition" Type="int" />
         </EntityType>
+        <EntityType Name="ProductionStatus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="45" Nullable="false" />
+        </EntityType>
+        <Association Name="ProductionOrderStatus">
+          <End Role="ProductionStatus" Type="Self.ProductionStatus" Multiplicity="1" />
+          <End Role="ProductionOrder" Type="Self.ProductionOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductionStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductionOrder">
+              <PropertyRef Name="ProductionStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="PRODModelStoreContainer">
           <EntitySet Name="ProductionOrder" EntityType="Self.ProductionOrder" Schema="PROD" store:Type="Tables" />
+          <EntitySet Name="ProductionStatus" EntityType="Self.ProductionStatus" Schema="PROD" store:Type="Tables" />
+          <AssociationSet Name="ProductionOrderStatus" Association="Self.ProductionOrderStatus">
+            <End Role="ProductionStatus" EntitySet="ProductionStatus" />
+            <End Role="ProductionOrder" EntitySet="ProductionOrder" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PRODModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="PRODEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ProductionOrder" EntityType="PRODModel.ProductionOrder" />
+          <EntitySet Name="ProductionStatus" EntityType="PRODModel.ProductionStatus" />
+          <AssociationSet Name="ProductionOrderStatus" Association="PRODModel.ProductionOrderStatus">
+            <End Role="ProductionStatus" EntitySet="ProductionStatus" />
+            <End Role="ProductionOrder" EntitySet="ProductionOrder" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="ProductionOrder">
           <Key>
-            <PropertyRef Name="ProductionOrderId" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="ProductionOrderId" Type="Int32" Nullable="false" />
-          <Property Name="ProductionOrdercol" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerOrderId" Type="Int32" Nullable="false" />
+          <Property Name="OrderDate" Type="DateTime" />
+          <Property Name="DeliveryDate" Type="DateTime" />
+          <Property Name="Color" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Motiv" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Amount" Type="Int32" Nullable="false" />
+          <Property Name="OrderItem" Type="Int32" />
+          <Property Name="ProductionStatusId" Type="Int32" Nullable="false" />
+          <Property Name="OrderPosition" Type="Int32" />
+          <NavigationProperty Name="ProductionStatus" Relationship="PRODModel.ProductionOrderStatus" FromRole="ProductionOrder" ToRole="ProductionStatus" />
         </EntityType>
-        <EntityContainer Name="PRODEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="ProductionOrder" EntityType="Self.ProductionOrder" />
-        </EntityContainer>
+        <EntityType Name="ProductionStatus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ProductionOrder" Relationship="PRODModel.ProductionOrderStatus" FromRole="ProductionStatus" ToRole="ProductionOrder" />
+        </EntityType>
+        <Association Name="ProductionOrderStatus">
+          <End Type="PRODModel.ProductionStatus" Role="ProductionStatus" Multiplicity="1" />
+          <End Type="PRODModel.ProductionOrder" Role="ProductionOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductionStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductionOrder">
+              <PropertyRef Name="ProductionStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -39,8 +104,24 @@
           <EntitySetMapping Name="ProductionOrder">
             <EntityTypeMapping TypeName="PRODModel.ProductionOrder">
               <MappingFragment StoreEntitySet="ProductionOrder">
-                <ScalarProperty Name="ProductionOrderId" ColumnName="ProductionOrderId" />
-                <ScalarProperty Name="ProductionOrdercol" ColumnName="ProductionOrdercol" />
+                <ScalarProperty Name="OrderPosition" ColumnName="OrderPosition" />
+                <ScalarProperty Name="ProductionStatusId" ColumnName="ProductionStatusId" />
+                <ScalarProperty Name="OrderItem" ColumnName="OrderItem" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Motiv" ColumnName="Motiv" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="CustomerOrderId" ColumnName="CustomerOrderId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductionStatus">
+            <EntityTypeMapping TypeName="PRODModel.ProductionStatus">
+              <MappingFragment StoreEntitySet="ProductionStatus">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

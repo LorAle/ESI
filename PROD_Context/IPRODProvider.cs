@@ -10,5 +10,11 @@ namespace PROD_Context
     public interface IProdProvider
     {
         IEnumerable<ProductionOrderModel> GetProductionOrders();
+        ProductionOrderModel CreateProductionOrder(ProductionOrderFormModel data);
+        IEnumerable<ProductionOrderStatusModel> GetProductionOrderStatus();
+
+        bool UpdateProductionOrder(int orderId, ProductionOrderFormModel data);
+
+        bool DeleteProductionOrder(int orderId);
     }
 }

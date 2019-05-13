@@ -55,7 +55,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IPRODProvider.cs" />
+    <Compile Include="Models\ProductionOrderFormModel.cs" />
     <Compile Include="Models\ProductionOrderModel.cs" />
+    <Compile Include="Models\ProductionOrderStatusModel.cs" />
     <Compile Include="PROD.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -73,6 +75,9 @@
     </Compile>
     <Compile Include="PRODProvider.cs" />
     <Compile Include="ProductionOrder.cs">
+      <DependentUpon>PROD.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProductionStatus.cs">
       <DependentUpon>PROD.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

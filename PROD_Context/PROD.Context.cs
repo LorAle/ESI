@@ -26,5 +26,6 @@ namespace PROD_Context
         }
     
         public DbSet<ProductionOrder> ProductionOrder { get; set; }
+        public DbSet<ProductionStatus> ProductionStatus { get; set; }
     }
 }

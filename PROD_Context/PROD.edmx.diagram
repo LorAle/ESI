@@ -5,7 +5,9 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="d134c053e9cf4ba1973012d031e4e4c3" Name="Diagram1">
-        <EntityTypeShape EntityType="PRODModel.ProductionOrder" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PRODModel.ProductionOrder" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="PRODModel.ProductionStatus" Width="1.5" PointX="0.75" PointY="1.75" />
+        <AssociationConnector Association="PRODModel.ProductionOrderStatus" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

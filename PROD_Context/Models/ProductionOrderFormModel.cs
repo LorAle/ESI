@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace PROD_Context.Models
 {
-    public class ProductionOrderModel
+    public class ProductionOrderFormModel
     {
-        public int Id { get; set; }
         public int CustomerOrderId { get; set; }
         public Nullable<System.DateTime> OrderDate { get; set; }
         public Nullable<System.DateTime> DeliveryDate { get; set; }

@@ -14,7 +14,17 @@ namespace PROD_Context
     
     public partial class ProductionOrder
     {
-        public int ProductionOrderId { get; set; }
-        public string ProductionOrdercol { get; set; }
+        public int Id { get; set; }
+        public int CustomerOrderId { get; set; }
+        public Nullable<System.DateTime> OrderDate { get; set; }
+        public Nullable<System.DateTime> DeliveryDate { get; set; }
+        public string Color { get; set; }
+        public string Motiv { get; set; }
+        public int Amount { get; set; }
+        public Nullable<int> OrderItem { get; set; }
+        public int ProductionStatusId { get; set; }
+        public Nullable<int> OrderPosition { get; set; }
+    
+        public virtual ProductionStatus ProductionStatus { get; set; }
     }
 }
