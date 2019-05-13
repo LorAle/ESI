@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MAWI_Context.Models
 {
-    class QualityModel
+    public class QualityModel
     {
         public int QualityId { get; set; }
         public int MaterialId { get; set; }
