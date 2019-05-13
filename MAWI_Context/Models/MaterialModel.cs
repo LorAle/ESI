@@ -8,7 +8,15 @@ namespace MAWI_Context.Models
 {
     public class MaterialModel
     {
-        public string Name { get; set; }
-        public int id { get; set; }
+        public int MaterialId { get; set; }
+        public int SupplierId { get; set; }
+        public Nullable<System.DateTime> DeliveryDate { get; set; }
+        public string Description { get; set; }
+        public Nullable<int> Stock { get; set; }
+        public string Unit { get; set; }
+        public Nullable<decimal> Price { get; set; }
+
+        public virtual Supplier Supplier { get; set; }
+        public virtual ICollection<Quality> Quality { get; set; }
     }
 }

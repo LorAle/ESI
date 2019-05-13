@@ -5,7 +5,11 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="8cdd2700afdd47a9b3f279ad628da6e2" Name="Diagram1">
-        <EntityTypeShape EntityType="MAWIModel.Supplier" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MAWIModel.Material" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="MAWIModel.Quality" Width="1.5" PointX="5.25" PointY="1" />
+        <EntityTypeShape EntityType="MAWIModel.Supplier" Width="1.5" PointX="0.75" PointY="1" />
+        <AssociationConnector Association="MAWIModel.Material_ibfk_1" />
+        <AssociationConnector Association="MAWIModel.Quality_ibfk_1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
