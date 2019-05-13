@@ -31,6 +31,7 @@ namespace MAWI_Context
             }).ToList();
         }
 
+
         public MaterialModel CreateMaterial(MaterialFormModel data)
         {
             Material newMaterial = new Material();
@@ -101,6 +102,24 @@ namespace MAWI_Context
             }).ToList();
         }
 
-   
+        public IEnumerable<QualityModel> GetQualityForMaterial(int materialId)
+        {
+                var qualityFromDB = _context.Quality.Where(x => x.MaterialId == materialId);
+                if (qualityFromDB != null)
+                {
+                    return qualityFromDB.Select(x => new QualityModel
+                    {
+                        QualityId = x.QualityId,
+                        MaterialId = x.MaterialId,
+                        Whiteness = x.Whiteness,
+                        Absorbency = x.Absorbency,
+                        Viscosity = x.Viscosity,
+                        Ppml = x.Ppml,
+                        DeltaE = x.DeltaE,
+                        Amount = x.Amount
+                    }).ToList();
+                }
+            return new List<QualityModel>();
+        }
     }
 }

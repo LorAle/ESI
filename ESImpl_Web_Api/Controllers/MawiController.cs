@@ -25,5 +25,13 @@ namespace ESImpl_Web_Api.Controllers
         {
             return this._context.GetSuppliers();
         }
+
+        [HttpGet]
+        [Route("material/{materialId:int}")]
+        public IEnumerable<QualityModel> GetQualityForMaterial(int materialId)
+        {
+            return this._context.GetQualityForMaterial(materialId);
+        }
+
     }
 }

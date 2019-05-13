@@ -17,6 +17,6 @@ namespace MAWI_Context.Models
         public string Contactperson { get; set; }
         public Nullable<int> Phone { get; set; }
 
-        public virtual ICollection<Material> Material { get; set; }
+       // public virtual ICollection<Material> Material { get; set; }
     }
 }
