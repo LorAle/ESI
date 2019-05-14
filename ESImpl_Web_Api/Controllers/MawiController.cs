@@ -19,18 +19,50 @@ namespace ESImpl_Web_Api.Controllers
             _context = new MawiProvider(new MAWIEntities());
         }
 
+        /// <summary>
+        /// gibt alle Lieferanten zurueck
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        [Route("")]
+        [Route("suppliers")]
         public IEnumerable<SupplierModel> GetSuppliers()
         {
             return this._context.GetSuppliers();
         }
 
+        /// <summary>
+        /// gibt alle Materialien zurueck
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("")]
+        public IEnumerable<MaterialModel> GetMaterials()
+        {
+            return this._context.GetMaterial();
+        }
+
+        /// <summary>
+        /// liefert die Qualitaetswerte fuer ein Material
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("material/{materialId:int}")]
         public IEnumerable<QualityModel> GetQualityForMaterial(int materialId)
         {
             return this._context.GetQualityForMaterial(materialId);
+        }
+
+        /// <summary>
+        /// wird benoetigt um Material anzulegen
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("")]
+        public MaterialModel CreateMaterial([FromBody] MaterialFormModel data)
+        {
+            return this._context.CreateMaterial(data);
         }
 
     }
