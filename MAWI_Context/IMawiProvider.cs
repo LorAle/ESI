@@ -15,6 +15,6 @@ namespace MAWI_Context
         IEnumerable<QualityModel> GetQuality();
         QualityModel CreatQuality(QualityFormModel data);
         IEnumerable<QualityModel> GetQualityForMaterial(int materialId);
-        //IEnumerable<ProducedProduct> GetProducedProduct();
+        IEnumerable<ProducedProduct> GetProducedProduct();
     }
 }
