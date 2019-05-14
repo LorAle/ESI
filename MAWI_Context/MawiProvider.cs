@@ -122,9 +122,32 @@ namespace MAWI_Context
             return new List<QualityModel>();
         }
 
-        public IEnumerable<ProducedProduct> GetProducedProduct()
+        public IEnumerable<ProducedProductModel> GetProducedProduct()
         {
+            return _context.ProducedProduct.Select(x => new ProducedProductModel
+            {
+                ProducedProductId = x.ProducedProductId,
+                OrderId = x.OrderId,
+                Amount = x.Amount
+            }
+                ).ToList();
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<ProducedProductModel> GetProducedProductById(int producedProductId)
+        {
+
+            var producedProductFromDB = _context.ProducedProduct.Where(x => x.ProducedProductId == producedProductId);
+            if (producedProductFromDB != null)
+            {
+                return producedProductFromDB.Select(x => new ProducedProductModel
+                {
+                    ProducedProductId = x.ProducedProductId,
+                    OrderId = x.OrderId,
+                    Amount = x.Amount
+                }).ToList();
+            }
+            return new List<ProducedProductModel>();
         }
     }
 }

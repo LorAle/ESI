@@ -31,6 +31,29 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
+        /// gibt alle Fertigprodukte zurueck
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("producedProduct")]
+        public IEnumerable<ProducedProductModel> GetProducedProduct()
+        {
+            return this._context.GetProducedProduct();
+        }
+
+        /// <summary>
+        /// liefert die Qualitaetswerte fuer ein Material
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("producedProduct/{producedProductId:int}")]
+        public IEnumerable<ProducedProductModel> GetProducedProductById(int producedProductId)
+        {
+            return this._context.GetProducedProductById(producedProductId);
+        }
+
+        /// <summary>
         /// gibt alle Materialien zurueck
         /// </summary>
         /// <returns></returns>
