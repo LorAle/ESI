@@ -15,6 +15,21 @@ namespace MAWI_Context
             _context = context;
         }
 
+        public IEnumerable<SupplierModel> GetSuppliers()
+        {
+            return _context.Supplier.Select(x => new SupplierModel
+            {
+                SupplierId = x.SupplierId,
+                Name = x.Name,
+                Address = x.Address,
+                PLZ = x.PLZ,
+                City = x.City,
+                Email = x.Email,
+                Contactperson = x.Contactperson,
+                Phone = x.Phone
+            }).ToList();
+        }
+
         public IEnumerable<MaterialModel> GetMaterial()
         {
             return _context.Material.Select(x => new MaterialModel
@@ -87,21 +102,6 @@ namespace MAWI_Context
             };
         }
 
-        public IEnumerable<SupplierModel> GetSuppliers()
-        {
-            return _context.Supplier.Select(x => new SupplierModel
-            {
-                SupplierId = x.SupplierId,
-                Name = x.Name,
-                Address = x.Address,
-                PLZ = x.PLZ,
-                City = x.City,
-                Email = x.Email,
-                Contactperson = x.Contactperson,
-                Phone = x.Phone
-            }).ToList();
-        }
-
         public IEnumerable<QualityModel> GetQualityForMaterial(int materialId)
         {
                 var qualityFromDB = _context.Quality.Where(x => x.MaterialId == materialId);
@@ -120,6 +120,34 @@ namespace MAWI_Context
                     }).ToList();
                 }
             return new List<QualityModel>();
+        }
+
+        public IEnumerable<ProducedProductModel> GetProducedProduct()
+        {
+            return _context.ProducedProduct.Select(x => new ProducedProductModel
+            {
+                ProducedProductId = x.ProducedProductId,
+                OrderId = x.OrderId,
+                Amount = x.Amount
+            }
+                ).ToList();
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<ProducedProductModel> GetProducedProductById(int producedProductId)
+        {
+
+            var producedProductFromDB = _context.ProducedProduct.Where(x => x.ProducedProductId == producedProductId);
+            if (producedProductFromDB != null)
+            {
+                return producedProductFromDB.Select(x => new ProducedProductModel
+                {
+                    ProducedProductId = x.ProducedProductId,
+                    OrderId = x.OrderId,
+                    Amount = x.Amount
+                }).ToList();
+            }
+            return new List<ProducedProductModel>();
         }
     }
 }
