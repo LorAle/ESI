@@ -10,7 +10,7 @@ using VEVE_Context.Models;
 namespace ESImpl_Web_Api.Controllers
 {
     /// <summary>
-    /// Vertrieb & Verkauf Schnittstelle
+    /// Vertrieb und Verkauf Schnittstelle
     /// </summary>
     /// <returns></returns>
     [Authorize]
