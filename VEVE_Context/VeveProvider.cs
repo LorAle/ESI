@@ -137,5 +137,62 @@ namespace VEVE_Context
 
             return new List<CustomerOrderModel>();
         }
+
+        public CustomerModel CreateCustomer(CustomerModel data)
+        {
+            CUSTOMERS newCustomer = new CUSTOMERS();
+            _context.CUSTOMERS.Add(newCustomer);
+            _context.Entry(newCustomer).CurrentValues.SetValues(data);
+            _context.SaveChanges();
+            return new CustomerModel
+            {
+                CUSTID = newCustomer.CUSTID,
+                BUSINESSPARTNER= newCustomer.BUSINESSPARTNER,
+                CITY = newCustomer.CITY,
+                COUNTRY = newCustomer.COUNTRY,
+                LASTNAME = newCustomer.LASTNAME,
+                POSTCODE = newCustomer.POSTCODE,
+                PRENAME = newCustomer.PRENAME,
+                STREET = newCustomer.STREET
+                
+            };
+        }
+
+        public CustomerOrderModel CreateCustOrder(CustomerOrderFormModel data)
+        {
+            CUSTORDER newCustOrder = new CUSTORDER();
+            _context.CUSTORDER.Add(newCustOrder);
+            _context.Entry(newCustOrder).CurrentValues.SetValues(data);
+            _context.SaveChanges();
+            return new CustomerOrderModel
+            {
+                CUSTID = newCustOrder.CUSTID,
+                CUSTORDERID = newCustOrder.CUSTORDERID,
+                DATE = newCustOrder.DATE,
+                STATUS = newCustOrder.STATUS
+
+            };
+        }
+
+        public OrderItemsModel CreateOrderItem(OrderItemsModel data)
+        {
+            ORDERITEMS newOrderItem = new ORDERITEMS();
+            _context.ORDERITEMS.Add(newOrderItem);
+            _context.Entry(newOrderItem).CurrentValues.SetValues(data);
+            _context.SaveChanges();
+            return new OrderItemsModel
+            {
+                ITEMID = newOrderItem.ITEMID,
+ARTICLENUMBER = newOrderItem.ARTICLENUMBER,
+                COLORCODE = newOrderItem.COLORCODE,
+                COLORNAME = newOrderItem.COLORNAME,
+                CUSTORDERID = newOrderItem.CUSTORDERID,
+                HASPRINT = newOrderItem.HASPRINT,
+                PRINTNUMBER = newOrderItem.PRINTNUMBER,
+                QUANTITY = newOrderItem.QUANTITY
+                
+
+            };
+        }
     }
 }

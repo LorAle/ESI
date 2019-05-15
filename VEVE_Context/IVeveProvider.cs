@@ -20,5 +20,8 @@ namespace VEVE_Context
         IEnumerable<CustomerOrderModel> GetOrdersOfCustomer(int customerId);
 
         IEnumerable<CustomerOrderModel> SetOrderStatus(int orderId, int statusId);
+        CustomerModel CreateCustomer(CustomerModel data);
+        CustomerOrderModel CreateCustOrder(CustomerOrderFormModel data);
+        OrderItemsModel CreateOrderItem(OrderItemsModel data);
     }
 }

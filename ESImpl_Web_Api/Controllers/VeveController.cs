@@ -99,6 +99,36 @@ namespace ESImpl_Web_Api.Controllers
         {
             return this._context.GetOrdersOfCustomer(customerId);
         }
+        /// <summary>
+        /// Create new customer
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("customer")]
+        public CustomerModel CreateCustomer([FromBody] CustomerModel data)
+        {
+            return this._context.CreateCustomer(data);
+        }
+        /// <summary>
+        /// Create new customer
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("order")]
+        public CustomerOrderModel CreateCustOrder([FromBody] CustomerOrderFormModel data)
+        {
+            return this._context.CreateCustOrder(data);
+        }
+        /// <summary>
+        /// Create new customer
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("orderitems")]
+        public OrderItemsModel CreateOrderItem([FromBody] OrderItemsModel data)
+        {
+            return this._context.CreateOrderItem(data);
+        }
 
         /// <summary>
         /// Updates the status of a certain order
