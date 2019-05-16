@@ -38,6 +38,16 @@ namespace ESImpl_Web_Api.Controllers
             return this._context.GetCustomers();
         }
         /// <summary>
+        /// Returns the customer by id
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("customer/{customerId:int}")]
+        public IEnumerable<CustomerModel> GetCustomersById(int customerId)
+        {
+            return this._context.GetCustomersById(customerId);
+        }
+        /// <summary>
         /// Returns all single itmes of an order
         /// </summary>
         /// <returns></returns>
@@ -94,7 +104,7 @@ namespace ESImpl_Web_Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("customer/{customerId:int}")]
+        [Route("customer/{customerId:int}/orders")]
         public IEnumerable<CustomerOrderModel> GetOrdersOfCustomer(int customerId)
         {
             return this._context.GetOrdersOfCustomer(customerId);

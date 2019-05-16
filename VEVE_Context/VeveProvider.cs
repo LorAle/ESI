@@ -25,7 +25,27 @@ namespace VEVE_Context
                 STATUS = x.STATUS
             }).ToList();
         }
+        //GetCustomersById
+        public IEnumerable<CustomerModel> GetCustomersById(int customerId)
+        {
+            var customerFromDB = _context.CUSTOMERS.Where(x => x.CUSTID == customerId);
+            if (customerFromDB != null)
+            {
+                return customerFromDB.Select(x => new CustomerModel
+                {
+                    CUSTID = x.CUSTID,
+                    BUSINESSPARTNER = x.BUSINESSPARTNER,
+                    CITY = x.CITY,
+                    COUNTRY = x.COUNTRY,
+                    LASTNAME = x.LASTNAME,
+                    POSTCODE = x.POSTCODE,
+                    PRENAME = x.PRENAME,
+                    STREET = x.STREET
 
+                }).ToList();
+            }
+            return new List<CustomerModel>();
+        }
         public IEnumerable<OrderItemsModel> GetItemsByOrder(int orderId) {
             var ordersFromDB = _context.CUSTORDER.Where(x => x.CUSTORDERID == orderId).SingleOrDefault();
             if (ordersFromDB!=null)
