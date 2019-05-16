@@ -75,6 +75,7 @@
     </Compile>
     <Compile Include="MawiProvider.cs" />
     <Compile Include="Models\MaterialFormModel.cs" />
+    <Compile Include="Models\MaterialOrderModel.cs" />
     <Compile Include="Models\ProducedProductModel.cs" />
     <Compile Include="Models\QualityFormModel.cs" />
     <Compile Include="Models\QualityModel.cs" />
