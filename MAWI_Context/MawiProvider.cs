@@ -149,5 +149,14 @@ namespace MAWI_Context
             }
             return new List<ProducedProductModel>();
         }
+
+        // Schnittstelle Materialbereitstellen
+        public MaterialOrderModel CreateMaterialOrderModel(MaterialOrderModel data)
+        {
+            MaterialOrderModel newQuality = new MaterialOrderModel();
+            return new MaterialOrderModel
+            {
+            };
+        }
     }
 }
