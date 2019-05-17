@@ -29,7 +29,7 @@ namespace PROD_Context
                 OrderItem = x.OrderItem,
                 OrderPosition = x.OrderPosition,
                 ProductionStatusId = x.ProductionStatusId
-            }).ToList();
+            }).OrderBy(x=> x.OrderPosition).ToList();
         }
 
         public ProductionOrderModel CreateProductionOrder(ProductionOrderFormModel data)
