@@ -141,6 +141,16 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
+        /// Get
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("order/{orderId:int}")]
+        public IEnumerable<CustomerOrderModel> GetOrderById(int orderId)
+        {
+            return this._context.GetOrderById(orderId);
+        }
+        /// <summary>
         /// Updates the status of a certain order
         /// </summary>
         /// <returns></returns>

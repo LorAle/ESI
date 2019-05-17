@@ -25,7 +25,6 @@ namespace VEVE_Context
                 STATUS = x.STATUS
             }).ToList();
         }
-        //GetCustomersById
         public IEnumerable<CustomerModel> GetCustomersById(int customerId)
         {
             var customerFromDB = _context.CUSTOMERS.Where(x => x.CUSTID == customerId);
@@ -64,6 +63,21 @@ namespace VEVE_Context
                 }).ToList();
             }
             return new List<OrderItemsModel>();
+        }
+        public IEnumerable<CustomerOrderModel> GetOrderById(int orderId)
+        {
+            var ordersFromDB = _context.CUSTORDER.Where(x => x.CUSTORDERID == orderId);
+            if (ordersFromDB != null)
+            {
+                return ordersFromDB.Select(x => new CustomerOrderModel
+                {
+                    CUSTID = x.CUSTID,
+                    CUSTORDERID = x.CUSTORDERID,
+                    DATE = x.DATE,
+                    STATUS = x.STATUS
+                }).ToList();
+            }
+            return new List<CustomerOrderModel>();
         }
         public IEnumerable<CustomerOrderModel> GetNewCustomerOrders()
         {
