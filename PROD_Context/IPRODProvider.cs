@@ -16,5 +16,7 @@ namespace PROD_Context
         bool UpdateProductionOrder(int orderId, ProductionOrderFormModel data);
 
         bool DeleteProductionOrder(int orderId);
+
+        IEnumerable<ProductionOrderModel> SortProductionOrders();
     }
 }

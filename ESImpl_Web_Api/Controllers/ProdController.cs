@@ -9,11 +9,17 @@ using System.Web.Http;
 
 namespace ESImpl_Web_Api.Controllers
 {
+    /// <summary>
+    /// Prodcution Interface
+    /// </summary>
     [Authorize]
     [RoutePrefix("prod")]
     public class ProdController : ApiController
     {
         readonly IProdProvider _context;
+        /// <summary>
+        /// Initialize DB-Context
+        /// </summary>
         public ProdController()
         {
             _context = new ProdProvider(new PRODEntities());
@@ -56,6 +62,7 @@ namespace ESImpl_Web_Api.Controllers
             return this._context.UpdateProductionOrder(orderId, data);
         }
 
+
         /// <summary>
         /// Deletes the entry of the given order id
         /// </summary>
@@ -68,11 +75,26 @@ namespace ESImpl_Web_Api.Controllers
             return this._context.DeleteProductionOrder(orderId);
         }
 
+        /// <summary>
+        /// Returns all production order status
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("status")]
         public IEnumerable<ProductionOrderStatusModel> GetProductionOrderStatus()
         {
             return this._context.GetProductionOrderStatus();
+        }
+
+        /// <summary>
+        /// Updates the entry of the order with the new sorting number
+        /// </summary>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("order")]
+        public IEnumerable<ProductionOrderModel> SortProductionOrders()
+        {
+            return this._context.SortProductionOrders();
         }
     }
 }

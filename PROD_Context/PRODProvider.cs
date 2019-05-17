@@ -1,6 +1,7 @@
 ﻿using PROD_Context.Models;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -85,5 +86,29 @@ namespace PROD_Context
             });
         }
 
+        public IEnumerable<ProductionOrderModel> SortProductionOrders()
+        {
+            var orders = _context.ProductionOrder.Where(x => x.ProductionStatus.Id == 1).ToList();
+            orders = orders.OrderBy(x => x.DeliveryDate).ThenBy(x => Color.FromArgb(Convert.ToInt32(x.Color.Substring(1), 16)).GetBrightness()).ToList();
+            for (int i = 1; i <= orders.Count; i++)
+            {
+                orders[i-1].OrderPosition = i;
+            }
+            _context.SaveChanges();
+
+            return orders.Select(x => new ProductionOrderModel
+            {
+                Id = x.Id,
+                Amount = x.Amount,
+                Color = x.Color,
+                CustomerOrderId = x.CustomerOrderId,
+                DeliveryDate = x.DeliveryDate,
+                Motiv = x.Motiv,
+                OrderDate = x.OrderDate,
+                OrderItem = x.OrderItem,
+                OrderPosition = x.OrderPosition,
+                ProductionStatusId = x.ProductionStatusId
+            }).ToList();
+        }
     }
 }
