@@ -53,15 +53,15 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
-        /// liefert die Qualitaetswerte fuer ein Material
+        /// liefert die Fertigprodukte anhand eines Auftrags zurueck
         /// </summary>
-        /// <param name="materialId"></param>
+        /// <param name="customerOrderId"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("producedProduct/{producedProductId:int}")]
-        public IEnumerable<ProducedProductModel> GetProducedProductById(int producedProductId)
+        [Route("producedProduct/{customerOrderId:int}")]
+        public IEnumerable<ProducedProductModel> GetProducedProductById(int customerOrderId)
         {
-            return this._context.GetProducedProductById(producedProductId);
+            return this._context.GetProducedProductByCustId(customerOrderId);
         }
 
         /// <summary>

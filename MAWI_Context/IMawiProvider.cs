@@ -17,7 +17,7 @@ namespace MAWI_Context
         QualityModel CreatQuality(QualityFormModel data);
         IEnumerable<QualityModel> GetQualityForMaterial(int materialId);
         IEnumerable<ProducedProductModel> GetProducedProduct();
-        IEnumerable<ProducedProductModel> GetProducedProductById(int producedProductId);
+        IEnumerable<ProducedProductModel> GetProducedProductByCustId(int customerOrderId);
         bool UpdateMaterial(int id, MaterialFormModel data);
         bool SupplyMaterial(String type, int amount);
         bool CollectMaterial(int amount, int? materialId, int? producedProductId, int? customerOrderId);

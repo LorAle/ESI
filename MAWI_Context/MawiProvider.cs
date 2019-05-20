@@ -76,11 +76,11 @@ namespace MAWI_Context
                     if (materialFromDB != null)
                     {
                         // holt sich ersten Eintrag auf den Bedingung zutrifft
-                        var firstMaterial = materialFromDB.First();
-                        if (firstMaterial != null)
+                        if (materialFromDB.First() != null)
                         {
-                            // Berechnet neue Bestand
-                            int newStock = firstMaterial.Stock.Value - amount;
+                        var firstMaterial = materialFromDB.First();
+                        // Berechnet neue Bestand
+                        int newStock = firstMaterial.Stock.Value - amount;
                             firstMaterial.Stock = newStock;
 
                             // Eintrag in DB updaten
@@ -214,10 +214,10 @@ namespace MAWI_Context
             throw new NotImplementedException();
         }
 
-        public IEnumerable<ProducedProductModel> GetProducedProductById(int producedProductId)
+        public IEnumerable<ProducedProductModel> GetProducedProductByCustId(int custOrderId)
         {
 
-            var producedProductFromDB = _context.ProducedProduct.Where(x => x.ProducedProductId == producedProductId);
+            var producedProductFromDB = _context.ProducedProduct.Where(x => x.OrderId == custOrderId);
             if (producedProductFromDB != null)
             {
                 return producedProductFromDB.Select(x => new ProducedProductModel
