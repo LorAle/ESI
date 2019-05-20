@@ -30,12 +30,9 @@ namespace MAWI_Context
             }).ToList();
         }
 
-        public IEnumerable<SupplierModel> GetSupplierNames()
+        public IEnumerable<String> GetSupplierNames()
         {
-            return _context.Supplier.Select(x => new SupplierModel
-            {
-                Name = x.Name
-            }).ToList();
+            return _context.Supplier.Select(x => x.Name).ToList();
         }
 
         public IEnumerable<MaterialModel> GetMaterial()

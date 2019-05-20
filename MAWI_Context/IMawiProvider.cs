@@ -10,7 +10,7 @@ namespace MAWI_Context
     public interface IMawiProvider
     {
         IEnumerable<SupplierModel> GetSuppliers();
-        IEnumerable<SupplierModel> GetSupplierNames();
+        IEnumerable<String> GetSupplierNames();
         IEnumerable<MaterialModel> GetMaterial();
         MaterialModel CreateMaterial(MaterialFormModel data);
         IEnumerable<QualityModel> GetQuality();

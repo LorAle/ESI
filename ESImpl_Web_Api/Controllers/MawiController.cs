@@ -25,7 +25,7 @@ namespace ESImpl_Web_Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("suppliernames")]
-        public IEnumerable<SupplierModel> GetSupplierNames()
+        public IEnumerable<String> GetSupplierNames()
         {
             return this._context.GetSupplierNames();
         }
