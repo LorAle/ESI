@@ -113,6 +113,19 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
+        /// Material updaten, z.B. wenn Produktion Material benoetigt
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="amount"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("order/supply")]
+        public bool SupplyMaterial(String  type, int amount)
+        {
+            return this._context.SupplyMaterial(type, amount);
+        }
+
+        /// <summary>
         /// wird benoetigt um Qualitaetswerte anzulegen
         /// </summary>
         /// <param name="data"></param>

@@ -19,6 +19,7 @@ namespace MAWI_Context
         IEnumerable<ProducedProductModel> GetProducedProduct();
         IEnumerable<ProducedProductModel> GetProducedProductById(int producedProductId);
         bool UpdateMaterial(int id, MaterialFormModel data);
+        bool SupplyMaterial(String type, int amount);
 
     }
 }
