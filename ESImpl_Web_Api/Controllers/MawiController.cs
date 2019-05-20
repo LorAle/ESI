@@ -88,5 +88,17 @@ namespace ESImpl_Web_Api.Controllers
             return this._context.CreateMaterial(data);
         }
 
+        /// <summary>
+        /// Material updaten, z.B. wenn Produktion Material benoetigt
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("updateMaterial/{id:int}")]
+        public bool UpdateMaterial(int id, [FromBody] MaterialFormModel data)
+        {
+            return this._context.UpdateMaterial(id, data);
+        }
     }
 }

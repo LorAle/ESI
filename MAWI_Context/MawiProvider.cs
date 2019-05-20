@@ -41,9 +41,23 @@ namespace MAWI_Context
                 Stock = x.Stock,
                 Unit = x.Unit,
                 Price = x.Price,
-                Supplier = x.Supplier,
-                Quality = x.Quality
+                // Supplier = x.Supplier,
+               // Quality = x.Quality
             }).ToList();
+        }
+
+        public bool UpdateMaterial(int id, MaterialFormModel data)
+        {
+            Material materialFromDB = _context.Material.Find(id);
+            if (materialFromDB == null)
+            {
+                return false;
+            }
+            data.MaterialId = id;
+
+            _context.Entry(materialFromDB).CurrentValues.SetValues(data);
+            _context.SaveChanges();
+            return true;
         }
 
 
