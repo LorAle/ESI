@@ -20,6 +20,17 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
+        /// gibt alle Lieferantennamen zurueck
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("suppliernames")]
+        public IEnumerable<SupplierModel> GetSupplierNames()
+        {
+            return this._context.GetSupplierNames();
+        }
+
+        /// <summary>
         /// gibt alle Lieferanten zurueck
         /// </summary>
         /// <returns></returns>
@@ -95,10 +106,22 @@ namespace ESImpl_Web_Api.Controllers
         /// <param name="data"></param>
         /// <returns></returns>
         [HttpPut]
-        [Route("updateMaterial/{id:int}")]
+        [Route("material/{id:int}")]
         public bool UpdateMaterial(int id, [FromBody] MaterialFormModel data)
         {
             return this._context.UpdateMaterial(id, data);
+        }
+
+        /// <summary>
+        /// wird benoetigt um Qualitaetswerte anzulegen
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("quality")]
+        public QualityModel CreateQuality([FromBody] QualityFormModel data)
+        {
+            return this._context.CreatQuality(data);
         }
     }
 }

@@ -30,6 +30,14 @@ namespace MAWI_Context
             }).ToList();
         }
 
+        public IEnumerable<SupplierModel> GetSupplierNames()
+        {
+            return _context.Supplier.Select(x => new SupplierModel
+            {
+                Name = x.Name
+            }).ToList();
+        }
+
         public IEnumerable<MaterialModel> GetMaterial()
         {
             return _context.Material.Select(x => new MaterialModel
@@ -162,15 +170,6 @@ namespace MAWI_Context
                 }).ToList();
             }
             return new List<ProducedProductModel>();
-        }
-
-        // Schnittstelle Materialbereitstellen
-        public MaterialOrderModel CreateMaterialOrderModel(MaterialOrderModel data)
-        {
-            MaterialOrderModel newQuality = new MaterialOrderModel();
-            return new MaterialOrderModel
-            {
-            };
         }
     }
 }
