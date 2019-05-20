@@ -94,7 +94,21 @@ namespace MAWI_Context
             return false;
         }
 
-
+        public bool CollectMaterial(int? materialId, int amount, int producedProductId, int customerOrderId)
+        {
+            // wenn materialId nicht befuellt ist, dann handelt es sich um ein Fertigprodukt
+            if(materialId == null || materialId == 0)
+            {
+                ProducedProduct newProdProduct = new ProducedProduct();
+                newProdProduct.Amount = amount;
+                newProdProduct.OrderId = customerOrderId;
+                newProdProduct.ProducedProductId = producedProductId;
+                _context.ProducedProduct.Add(newProdProduct);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
         public MaterialModel CreateMaterial(MaterialFormModel data)
         {
             Material newMaterial = new Material();

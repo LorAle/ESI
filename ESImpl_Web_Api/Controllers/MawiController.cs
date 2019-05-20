@@ -100,7 +100,7 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
-        /// Material updaten, z.B. wenn Produktion Material benoetigt
+        /// Material ueber MaterialId updaten
         /// </summary>
         /// <param name="id"></param>
         /// <param name="data"></param>
@@ -123,6 +123,21 @@ namespace ESImpl_Web_Api.Controllers
         public bool SupplyMaterial(String  type, int amount)
         {
             return this._context.SupplyMaterial(type, amount);
+        }
+
+        /// <summary>
+        /// SST zu Produktion Material einlagern
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <param name="amount"></param>
+        /// <param name="producedProductId"></param>
+        /// <param name="customerOrderId"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("order/collect")]
+        public bool CollectMaterial(int? materialId, int amount, int producedProductId, int customerOrderId)
+        {
+            return this._context.CollectMaterial(materialId, amount, producedProductId, customerOrderId);
         }
 
         /// <summary>
