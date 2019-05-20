@@ -94,20 +94,37 @@ namespace MAWI_Context
             return false;
         }
 
-        public bool CollectMaterial(int? materialId, int amount, int producedProductId, int customerOrderId)
+        public bool CollectMaterial(int amount, int? materialId, int? producedProductId, int? customerOrderId)
         {
             // wenn materialId nicht befuellt ist, dann handelt es sich um ein Fertigprodukt
-            if(materialId == null || materialId == 0)
+            if ((materialId == null || materialId == 0) && producedProductId != null && customerOrderId != null)
             {
                 ProducedProduct newProdProduct = new ProducedProduct();
                 newProdProduct.Amount = amount;
-                newProdProduct.OrderId = customerOrderId;
-                newProdProduct.ProducedProductId = producedProductId;
+                newProdProduct.OrderId = customerOrderId.GetValueOrDefault();
+                newProdProduct.ProducedProductId = producedProductId.GetValueOrDefault();
                 _context.ProducedProduct.Add(newProdProduct);
                 _context.SaveChanges();
                 return true;
+                
             }
-            return false;
+            // wenn wieder Farbe eingelagert werden muss
+            else
+            {
+                materialId = materialId.GetValueOrDefault();
+                // Material updaten
+                Material materialFromDB = _context.Material.Find(materialId);
+                if (materialFromDB == null)
+                {
+                    // Create koennte man nur machen, wenn auch die SupplierId mit uebergeben wird
+                    return false;
+                }
+                materialFromDB.Stock = materialFromDB.Stock.Value + amount;
+
+                _context.Entry(materialFromDB).CurrentValues.SetValues(amount);
+                _context.SaveChanges();
+                return true;
+            }
         }
         public MaterialModel CreateMaterial(MaterialFormModel data)
         {

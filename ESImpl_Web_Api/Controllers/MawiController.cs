@@ -135,9 +135,9 @@ namespace ESImpl_Web_Api.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("order/collect")]
-        public bool CollectMaterial(int? materialId, int amount, int producedProductId, int customerOrderId)
+        public bool CollectMaterial(int amount, int? materialId = null, int? producedProductId = null, int? customerOrderId = null)
         {
-            return this._context.CollectMaterial(materialId, amount, producedProductId, customerOrderId);
+            return this._context.CollectMaterial(amount, materialId, producedProductId, customerOrderId);
         }
 
         /// <summary>
