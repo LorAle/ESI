@@ -41,6 +41,7 @@ namespace MAWI_Context
             {
                 MaterialId = x.MaterialId,
                 SupplierId = x.SupplierId,
+                Name = x.Name,
                 DeliveryDate = x.DeliveryDate,
                 Description = x.Description,
                 Stock = x.Stock,
@@ -76,6 +77,7 @@ namespace MAWI_Context
             {
                 MaterialId = newMaterial.MaterialId,
                 SupplierId = newMaterial.SupplierId,
+                Name = newMaterial.Name,
                 DeliveryDate = newMaterial.DeliveryDate,
                 Description = newMaterial.Description,
                 Stock = newMaterial.Stock,
