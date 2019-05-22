@@ -90,6 +90,28 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
+        /// Returns all in production customer orders
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("order/inProduction")]
+        public IEnumerable<CustomerOrderModel> GetInProductionCustomerOrders()
+        {
+            return this._context.GetInProductionCustomerOrders();
+        }
+
+        /// <summary>
+        /// Returns all completed customer orders
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("order/completed")]
+        public IEnumerable<CustomerOrderModel> GetCompletedCustomerOrders()
+        {
+            return this._context.GetCompletedCustomerOrders();
+        }
+
+        /// <summary>
         /// Deletes an customer order
         /// </summary>
         /// <returns></returns>
