@@ -45,6 +45,7 @@ namespace MAWI_Context
                 DeliveryDate = x.DeliveryDate,
                 Description = x.Description,
                 Stock = x.Stock,
+                PackagingSize = x.PackagingSize,
                 Unit = x.Unit,
                 Price = x.Price
             }).ToList();
@@ -140,6 +141,7 @@ namespace MAWI_Context
                 DeliveryDate = newMaterial.DeliveryDate,
                 Description = newMaterial.Description,
                 Stock = newMaterial.Stock,
+                PackagingSize = newMaterial.PackagingSize,
                 Unit = newMaterial.Unit,
                 Price = newMaterial.Price,
                 Supplier = newMaterial.Supplier,
@@ -158,8 +160,7 @@ namespace MAWI_Context
                 Absorbency = x.Absorbency,
                 Viscosity = x.Viscosity,
                 Ppml = x.Ppml,
-                DeltaE = x.DeltaE,
-                Amount = x.Amount
+                DeltaE = x.DeltaE
             }).ToList();
         }
 
@@ -177,8 +178,7 @@ namespace MAWI_Context
                 Absorbency = newQuality.Absorbency,
                 Viscosity = newQuality.Viscosity,
                 Ppml = newQuality.Ppml,
-                DeltaE = newQuality.DeltaE,
-                Amount = newQuality.Amount
+                DeltaE = newQuality.DeltaE
             };
         }
 
@@ -195,8 +195,7 @@ namespace MAWI_Context
                         Absorbency = x.Absorbency,
                         Viscosity = x.Viscosity,
                         Ppml = x.Ppml,
-                        DeltaE = x.DeltaE,
-                        Amount = x.Amount
+                        DeltaE = x.DeltaE
                     }).ToList();
                 }
             return new List<QualityModel>();

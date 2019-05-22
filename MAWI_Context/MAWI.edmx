@@ -15,6 +15,7 @@
           <Property Name="DeliveryDate" Type="date" />
           <Property Name="Description" Type="varchar" MaxLength="255" />
           <Property Name="Stock" Type="int" />
+          <Property Name="PackagingSize" Type="int" />
           <Property Name="Unit" Type="varchar" MaxLength="255" />
           <Property Name="Price" Type="decimal" Precision="20" Scale="2" />
         </EntityType>
@@ -22,7 +23,7 @@
           <Key>
             <PropertyRef Name="ProducedProductId" />
           </Key>
-          <Property Name="ProducedProductId" Type="int" Nullable="false" />
+          <Property Name="ProducedProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OrderId" Type="int" Nullable="false" />
           <Property Name="Amount" Type="int" />
         </EntityType>
@@ -31,14 +32,13 @@
             <PropertyRef Name="QualityId" />
             <PropertyRef Name="MaterialId" />
           </Key>
-          <Property Name="QualityId" Type="int" Nullable="false" />
+          <Property Name="QualityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MaterialId" Type="int" Nullable="false" />
           <Property Name="Whiteness" Type="int" />
           <Property Name="Absorbency" Type="decimal" Precision="10" Scale="2" />
           <Property Name="Viscosity" Type="int" />
           <Property Name="Ppml" Type="int" />
           <Property Name="DeltaE" Type="decimal" Precision="10" Scale="2" />
-          <Property Name="Amount" Type="int" />
         </EntityType>
         <EntityType Name="Supplier">
           <Key>
@@ -53,18 +53,6 @@
           <Property Name="Contactperson" Type="varchar" MaxLength="255" />
           <Property Name="Phone" Type="int" />
         </EntityType>
-        <Association Name="ForeignKey_Material">
-          <End Role="Material" Type="Self.Material" Multiplicity="1" />
-          <End Role="Quality" Type="Self.Quality" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Material">
-              <PropertyRef Name="MaterialId" />
-            </Principal>
-            <Dependent Role="Quality">
-              <PropertyRef Name="MaterialId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Material_FK_LieferId">
           <End Role="Supplier" Type="Self.Supplier" Multiplicity="1" />
           <End Role="Material" Type="Self.Material" Multiplicity="*" />
@@ -77,18 +65,32 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="Quality_to_Material_FK">
+          <End Role="Material" Type="Self.Material" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Quality" Type="Self.Quality" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Material">
+              <PropertyRef Name="MaterialId" />
+            </Principal>
+            <Dependent Role="Quality">
+              <PropertyRef Name="MaterialId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="MAWIModelStoreContainer">
           <EntitySet Name="Material" EntityType="Self.Material" Schema="MAWI" store:Type="Tables" />
           <EntitySet Name="ProducedProduct" EntityType="Self.ProducedProduct" Schema="MAWI" store:Type="Tables" />
           <EntitySet Name="Quality" EntityType="Self.Quality" Schema="MAWI" store:Type="Tables" />
           <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="MAWI" store:Type="Tables" />
-          <AssociationSet Name="ForeignKey_Material" Association="Self.ForeignKey_Material">
-            <End Role="Material" EntitySet="Material" />
-            <End Role="Quality" EntitySet="Quality" />
-          </AssociationSet>
           <AssociationSet Name="Material_FK_LieferId" Association="Self.Material_FK_LieferId">
             <End Role="Supplier" EntitySet="Supplier" />
             <End Role="Material" EntitySet="Material" />
+          </AssociationSet>
+          <AssociationSet Name="Quality_to_Material_FK" Association="Self.Quality_to_Material_FK">
+            <End Role="Material" EntitySet="Material" />
+            <End Role="Quality" EntitySet="Quality" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -100,13 +102,13 @@
           <EntitySet Name="ProducedProduct" EntityType="MAWIModel.ProducedProduct" />
           <EntitySet Name="Quality" EntityType="MAWIModel.Quality" />
           <EntitySet Name="Supplier" EntityType="MAWIModel.Supplier" />
-          <AssociationSet Name="ForeignKey_Material" Association="MAWIModel.ForeignKey_Material">
-            <End Role="Material" EntitySet="Material" />
-            <End Role="Quality" EntitySet="Quality" />
-          </AssociationSet>
           <AssociationSet Name="Material_FK_LieferId" Association="MAWIModel.Material_FK_LieferId">
             <End Role="Supplier" EntitySet="Supplier" />
             <End Role="Material" EntitySet="Material" />
+          </AssociationSet>
+          <AssociationSet Name="Quality_to_Material_FK" Association="MAWIModel.Quality_to_Material_FK">
+            <End Role="Material" EntitySet="Material" />
+            <End Role="Quality" EntitySet="Quality" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Material">
@@ -119,16 +121,17 @@
           <Property Name="DeliveryDate" Type="DateTime" />
           <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Stock" Type="Int32" />
+          <Property Name="PackagingSize" Type="Int32" />
           <Property Name="Unit" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Price" Type="Decimal" />
-          <NavigationProperty Name="Quality" Relationship="MAWIModel.ForeignKey_Material" FromRole="Material" ToRole="Quality" />
           <NavigationProperty Name="Supplier" Relationship="MAWIModel.Material_FK_LieferId" FromRole="Material" ToRole="Supplier" />
+          <NavigationProperty Name="Quality" Relationship="MAWIModel.Quality_to_Material_FK" FromRole="Material" ToRole="Quality" />
         </EntityType>
         <EntityType Name="ProducedProduct">
           <Key>
             <PropertyRef Name="ProducedProductId" />
           </Key>
-          <Property Name="ProducedProductId" Type="Int32" Nullable="false" />
+          <Property Name="ProducedProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="OrderId" Type="Int32" Nullable="false" />
           <Property Name="Amount" Type="Int32" />
         </EntityType>
@@ -137,15 +140,14 @@
             <PropertyRef Name="QualityId" />
             <PropertyRef Name="MaterialId" />
           </Key>
-          <Property Name="QualityId" Type="Int32" Nullable="false" />
+          <Property Name="QualityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MaterialId" Type="Int32" Nullable="false" />
           <Property Name="Whiteness" Type="Int32" />
           <Property Name="Absorbency" Type="Decimal" />
           <Property Name="Viscosity" Type="Int32" />
           <Property Name="Ppml" Type="Int32" />
           <Property Name="DeltaE" Type="Decimal" />
-          <Property Name="Amount" Type="Int32" />
-          <NavigationProperty Name="Material" Relationship="MAWIModel.ForeignKey_Material" FromRole="Quality" ToRole="Material" />
+          <NavigationProperty Name="Material" Relationship="MAWIModel.Quality_to_Material_FK" FromRole="Quality" ToRole="Material" />
         </EntityType>
         <EntityType Name="Supplier">
           <Key>
@@ -161,18 +163,6 @@
           <Property Name="Phone" Type="Int32" />
           <NavigationProperty Name="Material" Relationship="MAWIModel.Material_FK_LieferId" FromRole="Supplier" ToRole="Material" />
         </EntityType>
-        <Association Name="ForeignKey_Material">
-          <End Type="MAWIModel.Material" Role="Material" Multiplicity="1" />
-          <End Type="MAWIModel.Quality" Role="Quality" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Material">
-              <PropertyRef Name="MaterialId" />
-            </Principal>
-            <Dependent Role="Quality">
-              <PropertyRef Name="MaterialId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Material_FK_LieferId">
           <End Type="MAWIModel.Supplier" Role="Supplier" Multiplicity="1" />
           <End Type="MAWIModel.Material" Role="Material" Multiplicity="*" />
@@ -185,7 +175,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <Association Name="Quality_to_Material_FK">
+          <End Type="MAWIModel.Material" Role="Material" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="MAWIModel.Quality" Role="Quality" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Material">
+              <PropertyRef Name="MaterialId" />
+            </Principal>
+            <Dependent Role="Quality">
+              <PropertyRef Name="MaterialId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -196,6 +200,7 @@
               <MappingFragment StoreEntitySet="Material">
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="Unit" ColumnName="Unit" />
+                <ScalarProperty Name="PackagingSize" ColumnName="PackagingSize" />
                 <ScalarProperty Name="Stock" ColumnName="Stock" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
@@ -217,7 +222,6 @@
           <EntitySetMapping Name="Quality">
             <EntityTypeMapping TypeName="MAWIModel.Quality">
               <MappingFragment StoreEntitySet="Quality">
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="DeltaE" ColumnName="DeltaE" />
                 <ScalarProperty Name="Ppml" ColumnName="Ppml" />
                 <ScalarProperty Name="Viscosity" ColumnName="Viscosity" />
