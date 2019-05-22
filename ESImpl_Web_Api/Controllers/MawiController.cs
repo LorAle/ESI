@@ -53,7 +53,7 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
-        /// liefert die Fertigprodukte anhand eines Auftrags zurueck
+        /// gibt die Fertigprodukte anhand eines Kundenauftrags zurueck
         /// </summary>
         /// <param name="customerOrderId"></param>
         /// <returns></returns>
@@ -88,7 +88,7 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
-        /// wird benoetigt um Material anzulegen
+        /// Material anlegen
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -113,7 +113,8 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
-        /// Material updaten, z.B. wenn Produktion Material benoetigt
+        /// SST zu Produktion - Material bereitstellen
+        /// Fuehrt update auf DB aus
         /// </summary>
         /// <param name="type"></param>
         /// <param name="amount"></param>
@@ -141,7 +142,7 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
-        /// wird benoetigt um Qualitaetswerte anzulegen
+        /// Qualitaetswerte anlegen
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>

@@ -15,8 +15,7 @@ namespace MAWI_Context.Models
         public Nullable<int> Viscosity { get; set; }
         public Nullable<int> Ppml { get; set; }
         public Nullable<decimal> DeltaE { get; set; }
-        public Nullable<int> Amount { get; set; }
 
-       // public virtual Material Material { get; set; }
+        // public virtual Material Material { get; set; }
     }
 }

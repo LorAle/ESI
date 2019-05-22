@@ -25,10 +25,11 @@ namespace MAWI_Context
         public Nullable<System.DateTime> DeliveryDate { get; set; }
         public string Description { get; set; }
         public Nullable<int> Stock { get; set; }
+        public Nullable<int> PackagingSize { get; set; }
         public string Unit { get; set; }
         public Nullable<decimal> Price { get; set; }
     
-        public virtual ICollection<Quality> Quality { get; set; }
         public virtual Supplier Supplier { get; set; }
+        public virtual ICollection<Quality> Quality { get; set; }
     }
 }
