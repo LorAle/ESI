@@ -25,9 +25,10 @@ namespace MAWI_Context
             throw new UnintentionalCodeFirstException();
         }
     
+        public DbSet<CollectionOrder> CollectionOrder { get; set; }
         public DbSet<Material> Material { get; set; }
         public DbSet<ProducedProduct> ProducedProduct { get; set; }
-        public DbSet<Quality> Quality { get; set; }
+        public DbSet<Stock> Stock { get; set; }
         public DbSet<Supplier> Supplier { get; set; }
     }
 }

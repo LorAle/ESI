@@ -75,17 +75,7 @@ namespace ESImpl_Web_Api.Controllers
             return this._context.GetMaterial();
         }
 
-        /// <summary>
-        /// liefert die Qualitaetswerte fuer ein Material
-        /// </summary>
-        /// <param name="materialId"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("quality/{materialId:int}")]
-        public IEnumerable<QualityModel> GetQualityForMaterial(int materialId)
-        {
-            return this._context.GetQualityForMaterial(materialId);
-        }
+
 
         /// <summary>
         /// entfernt Material aus DB
@@ -154,15 +144,16 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
-        /// Qualitaetswerte anlegen
+        /// liefert Qualitaetswerte fuer ein Material zurueck
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="materialId"></param>
         /// <returns></returns>
-        [HttpPost]
-        [Route("quality")]
-        public QualityModel CreateQuality([FromBody] QualityFormModel data)
+        [HttpGet]
+        [Route("quality/{stockId:int}")]
+        public IEnumerable<QualityModel> GetQualitytById(int stockId)
         {
-            return this._context.CreatQuality(data);
+            return this._context.GetQualitytById(stockId);
         }
+
     }
 }

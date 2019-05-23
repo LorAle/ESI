@@ -8,7 +8,7 @@ namespace MAWI_Context.Models
 {
     public class QualityModel
     {
-        public int QualityId { get; set; }
+
         public int MaterialId { get; set; }
         public Nullable<int> Whiteness { get; set; }
         public Nullable<decimal> Absorbency { get; set; }
@@ -16,6 +16,5 @@ namespace MAWI_Context.Models
         public Nullable<int> Ppml { get; set; }
         public Nullable<decimal> DeltaE { get; set; }
 
-        // public virtual Material Material { get; set; }
     }
 }

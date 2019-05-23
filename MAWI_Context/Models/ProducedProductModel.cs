@@ -11,5 +11,7 @@ namespace MAWI_Context.Models
         public int ProducedProductId { get; set; }
         public int OrderId { get; set; }
         public Nullable<int> Amount { get; set; }
+
+        public virtual ICollection<CollectionOrderModel> CollectionOrder { get; set; }
     }
 }

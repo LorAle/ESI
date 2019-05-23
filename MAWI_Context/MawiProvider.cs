@@ -44,7 +44,7 @@ namespace MAWI_Context
                 Name = x.Name,
                 DeliveryDate = x.DeliveryDate,
                 Description = x.Description,
-                Stock = x.Stock,
+                MinStock = x.MinStock,
                 PackagingSize = x.PackagingSize,
                 Unit = x.Unit,
                 Price = x.Price
@@ -85,7 +85,7 @@ namespace MAWI_Context
                 // dass immer type immer auf Wert in Feld Name matched.
                 //  if (type == "Shirt")
                 //{
-                var materialFromDB = _context.Material.Where(x => (x.Name.Contains(type) && x.Stock > amount));
+                var materialFromDB = _context.Material.Where(x => (x.Name.Contains(type) && x.MinStock > amount));
                     if (materialFromDB != null)
                     {
                         // holt sich ersten Eintrag auf den Bedingung zutrifft
@@ -93,8 +93,8 @@ namespace MAWI_Context
                         {
                         var firstMaterial = materialFromDB.First();
                         // Berechnet neue Bestand
-                        int newStock = firstMaterial.Stock.Value - amount;
-                            firstMaterial.Stock = newStock;
+                        int newStock = firstMaterial.MinStock.Value - amount;
+                            firstMaterial.MinStock = newStock;
 
                             // Eintrag in DB updaten
                             _context.Entry(firstMaterial).CurrentValues.SetValues(newStock);
@@ -132,7 +132,7 @@ namespace MAWI_Context
                     // Create koennte man nur machen, wenn auch die SupplierId mit uebergeben wird
                     return false;
                 }
-                materialFromDB.Stock = materialFromDB.Stock.Value + amount;
+                materialFromDB.MinStock = materialFromDB.MinStock.Value + amount;
 
                 _context.Entry(materialFromDB).CurrentValues.SetValues(amount);
                 _context.SaveChanges();
@@ -152,65 +152,12 @@ namespace MAWI_Context
                 Name = newMaterial.Name,
                 DeliveryDate = newMaterial.DeliveryDate,
                 Description = newMaterial.Description,
-                Stock = newMaterial.Stock,
+                MinStock = newMaterial.MinStock,
                 PackagingSize = newMaterial.PackagingSize,
                 Unit = newMaterial.Unit,
                 Price = newMaterial.Price,
-                Supplier = newMaterial.Supplier,
-                Quality = newMaterial.Quality
+                Supplier = newMaterial.Supplier
             };
-        }
-
-
-        public IEnumerable<QualityModel> GetQuality()
-        {
-            return _context.Quality.Select(x => new QualityModel
-            {
-                QualityId = x.QualityId,
-                MaterialId = x.MaterialId,
-                Whiteness = x.Whiteness,
-                Absorbency = x.Absorbency,
-                Viscosity = x.Viscosity,
-                Ppml = x.Ppml,
-                DeltaE = x.DeltaE
-            }).ToList();
-        }
-
-        public QualityModel CreatQuality(QualityFormModel data)
-        {
-            Quality newQuality = new Quality();
-            _context.Quality.Add(newQuality);
-            _context.Entry(newQuality).CurrentValues.SetValues(data);
-            _context.SaveChanges();
-            return new QualityModel
-            {
-                MaterialId = newQuality.MaterialId,
-                QualityId = newQuality.QualityId,
-                Whiteness = newQuality.Whiteness,
-                Absorbency = newQuality.Absorbency,
-                Viscosity = newQuality.Viscosity,
-                Ppml = newQuality.Ppml,
-                DeltaE = newQuality.DeltaE
-            };
-        }
-
-        public IEnumerable<QualityModel> GetQualityForMaterial(int materialId)
-        {
-                var qualityFromDB = _context.Quality.Where(x => x.MaterialId == materialId);
-                if (qualityFromDB != null)
-                {
-                    return qualityFromDB.Select(x => new QualityModel
-                    {
-                        QualityId = x.QualityId,
-                        MaterialId = x.MaterialId,
-                        Whiteness = x.Whiteness,
-                        Absorbency = x.Absorbency,
-                        Viscosity = x.Viscosity,
-                        Ppml = x.Ppml,
-                        DeltaE = x.DeltaE
-                    }).ToList();
-                }
-            return new List<QualityModel>();
         }
 
         public IEnumerable<ProducedProductModel> GetProducedProduct()
@@ -239,6 +186,24 @@ namespace MAWI_Context
                 }).ToList();
             }
             return new List<ProducedProductModel>();
+        }
+
+        public IEnumerable<QualityModel> GetQualitytById(int stockId)
+        {
+            var stockAndQualityFromDB = _context.Stock.Where(x => x.StockId == stockId);
+            if (stockAndQualityFromDB != null)
+            {
+                return stockAndQualityFromDB.Select(x => new QualityModel
+                {
+                    MaterialId = x.MaterialId,
+                    Whiteness = x.Whiteness,
+                    Absorbency = x.Absorbency,
+                    Viscosity = x.Viscosity,
+                    Ppml = x.Ppml,
+                    DeltaE = x.DeltaE
+                }).ToList();
+            }
+            return new List<QualityModel>();
         }
     }
 }

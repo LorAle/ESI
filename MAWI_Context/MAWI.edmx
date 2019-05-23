@@ -5,6 +5,15 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="MAWIModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CollectionOrder">
+          <Key>
+            <PropertyRef Name="CollectionId" />
+          </Key>
+          <Property Name="CollectionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StockId" Type="int" />
+          <Property Name="ProducedProductId" Type="int" />
+          <Property Name="CustOrderId" Type="int" />
+        </EntityType>
         <EntityType Name="Material">
           <Key>
             <PropertyRef Name="MaterialId" />
@@ -14,7 +23,7 @@
           <Property Name="Name" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="DeliveryDate" Type="date" />
           <Property Name="Description" Type="varchar" MaxLength="255" />
-          <Property Name="Stock" Type="int" />
+          <Property Name="MinStock" Type="int" />
           <Property Name="PackagingSize" Type="int" />
           <Property Name="Unit" Type="varchar" MaxLength="255" />
           <Property Name="Price" Type="decimal" Precision="20" Scale="2" />
@@ -27,13 +36,13 @@
           <Property Name="OrderId" Type="int" Nullable="false" />
           <Property Name="Amount" Type="int" />
         </EntityType>
-        <EntityType Name="Quality">
+        <EntityType Name="Stock">
           <Key>
-            <PropertyRef Name="QualityId" />
-            <PropertyRef Name="MaterialId" />
+            <PropertyRef Name="StockId" />
           </Key>
-          <Property Name="QualityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StockId" Type="int" Nullable="false" />
           <Property Name="MaterialId" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="int" />
           <Property Name="Whiteness" Type="int" />
           <Property Name="Absorbency" Type="decimal" Precision="10" Scale="2" />
           <Property Name="Viscosity" Type="decimal" Precision="10" Scale="5" />
@@ -53,6 +62,30 @@
           <Property Name="Contactperson" Type="varchar" MaxLength="255" />
           <Property Name="Phone" Type="int" />
         </EntityType>
+        <Association Name="CollectionOrder_ibfk_1">
+          <End Role="Stock" Type="Self.Stock" Multiplicity="0..1" />
+          <End Role="CollectionOrder" Type="Self.CollectionOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stock">
+              <PropertyRef Name="StockId" />
+            </Principal>
+            <Dependent Role="CollectionOrder">
+              <PropertyRef Name="StockId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CollectionOrder_ibfk_2">
+          <End Role="ProducedProduct" Type="Self.ProducedProduct" Multiplicity="0..1" />
+          <End Role="CollectionOrder" Type="Self.CollectionOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProducedProduct">
+              <PropertyRef Name="ProducedProductId" />
+            </Principal>
+            <Dependent Role="CollectionOrder">
+              <PropertyRef Name="ProducedProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Material_FK_LieferId">
           <End Role="Supplier" Type="Self.Supplier" Multiplicity="1" />
           <End Role="Material" Type="Self.Material" Multiplicity="*" />
@@ -65,32 +98,39 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Quality_to_Material_FK">
-          <End Role="Material" Type="Self.Material" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Quality" Type="Self.Quality" Multiplicity="*" />
+        <Association Name="Stock_ibfk_1">
+          <End Role="Material" Type="Self.Material" Multiplicity="1" />
+          <End Role="Stock" Type="Self.Stock" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Material">
               <PropertyRef Name="MaterialId" />
             </Principal>
-            <Dependent Role="Quality">
+            <Dependent Role="Stock">
               <PropertyRef Name="MaterialId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="MAWIModelStoreContainer">
+          <EntitySet Name="CollectionOrder" EntityType="Self.CollectionOrder" Schema="MAWI" store:Type="Tables" />
           <EntitySet Name="Material" EntityType="Self.Material" Schema="MAWI" store:Type="Tables" />
           <EntitySet Name="ProducedProduct" EntityType="Self.ProducedProduct" Schema="MAWI" store:Type="Tables" />
-          <EntitySet Name="Quality" EntityType="Self.Quality" Schema="MAWI" store:Type="Tables" />
+          <EntitySet Name="Stock" EntityType="Self.Stock" Schema="MAWI" store:Type="Tables" />
           <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="MAWI" store:Type="Tables" />
+          <AssociationSet Name="CollectionOrder_ibfk_1" Association="Self.CollectionOrder_ibfk_1">
+            <End Role="Stock" EntitySet="Stock" />
+            <End Role="CollectionOrder" EntitySet="CollectionOrder" />
+          </AssociationSet>
+          <AssociationSet Name="CollectionOrder_ibfk_2" Association="Self.CollectionOrder_ibfk_2">
+            <End Role="ProducedProduct" EntitySet="ProducedProduct" />
+            <End Role="CollectionOrder" EntitySet="CollectionOrder" />
+          </AssociationSet>
           <AssociationSet Name="Material_FK_LieferId" Association="Self.Material_FK_LieferId">
             <End Role="Supplier" EntitySet="Supplier" />
             <End Role="Material" EntitySet="Material" />
           </AssociationSet>
-          <AssociationSet Name="Quality_to_Material_FK" Association="Self.Quality_to_Material_FK">
+          <AssociationSet Name="Stock_ibfk_1" Association="Self.Stock_ibfk_1">
             <End Role="Material" EntitySet="Material" />
-            <End Role="Quality" EntitySet="Quality" />
+            <End Role="Stock" EntitySet="Stock" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -98,19 +138,39 @@
     <edmx:ConceptualModels>
       <Schema Namespace="MAWIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="MAWIEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CollectionOrder" EntityType="MAWIModel.CollectionOrder" />
           <EntitySet Name="Material" EntityType="MAWIModel.Material" />
           <EntitySet Name="ProducedProduct" EntityType="MAWIModel.ProducedProduct" />
-          <EntitySet Name="Quality" EntityType="MAWIModel.Quality" />
+          <EntitySet Name="Stock" EntityType="MAWIModel.Stock" />
           <EntitySet Name="Supplier" EntityType="MAWIModel.Supplier" />
+          <AssociationSet Name="CollectionOrder_ibfk_1" Association="MAWIModel.CollectionOrder_ibfk_1">
+            <End Role="Stock" EntitySet="Stock" />
+            <End Role="CollectionOrder" EntitySet="CollectionOrder" />
+          </AssociationSet>
+          <AssociationSet Name="CollectionOrder_ibfk_2" Association="MAWIModel.CollectionOrder_ibfk_2">
+            <End Role="ProducedProduct" EntitySet="ProducedProduct" />
+            <End Role="CollectionOrder" EntitySet="CollectionOrder" />
+          </AssociationSet>
           <AssociationSet Name="Material_FK_LieferId" Association="MAWIModel.Material_FK_LieferId">
             <End Role="Supplier" EntitySet="Supplier" />
             <End Role="Material" EntitySet="Material" />
           </AssociationSet>
-          <AssociationSet Name="Quality_to_Material_FK" Association="MAWIModel.Quality_to_Material_FK">
+          <AssociationSet Name="Stock_ibfk_1" Association="MAWIModel.Stock_ibfk_1">
             <End Role="Material" EntitySet="Material" />
-            <End Role="Quality" EntitySet="Quality" />
+            <End Role="Stock" EntitySet="Stock" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="CollectionOrder">
+          <Key>
+            <PropertyRef Name="CollectionId" />
+          </Key>
+          <Property Name="CollectionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StockId" Type="Int32" />
+          <Property Name="ProducedProductId" Type="Int32" />
+          <Property Name="CustOrderId" Type="Int32" />
+          <NavigationProperty Name="Stock" Relationship="MAWIModel.CollectionOrder_ibfk_1" FromRole="CollectionOrder" ToRole="Stock" />
+          <NavigationProperty Name="ProducedProduct" Relationship="MAWIModel.CollectionOrder_ibfk_2" FromRole="CollectionOrder" ToRole="ProducedProduct" />
+        </EntityType>
         <EntityType Name="Material">
           <Key>
             <PropertyRef Name="MaterialId" />
@@ -120,12 +180,12 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="DeliveryDate" Type="DateTime" />
           <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="Stock" Type="Int32" />
+          <Property Name="MinStock" Type="Int32" />
           <Property Name="PackagingSize" Type="Int32" />
           <Property Name="Unit" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Price" Type="Decimal" />
           <NavigationProperty Name="Supplier" Relationship="MAWIModel.Material_FK_LieferId" FromRole="Material" ToRole="Supplier" />
-          <NavigationProperty Name="Quality" Relationship="MAWIModel.Quality_to_Material_FK" FromRole="Material" ToRole="Quality" />
+          <NavigationProperty Name="Stock" Relationship="MAWIModel.Stock_ibfk_1" FromRole="Material" ToRole="Stock" />
         </EntityType>
         <EntityType Name="ProducedProduct">
           <Key>
@@ -134,20 +194,22 @@
           <Property Name="ProducedProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="OrderId" Type="Int32" Nullable="false" />
           <Property Name="Amount" Type="Int32" />
+          <NavigationProperty Name="CollectionOrder" Relationship="MAWIModel.CollectionOrder_ibfk_2" FromRole="ProducedProduct" ToRole="CollectionOrder" />
         </EntityType>
-        <EntityType Name="Quality">
+        <EntityType Name="Stock">
           <Key>
-            <PropertyRef Name="QualityId" />
-            <PropertyRef Name="MaterialId" />
+            <PropertyRef Name="StockId" />
           </Key>
-          <Property Name="QualityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StockId" Type="Int32" Nullable="false" />
           <Property Name="MaterialId" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Int32" />
           <Property Name="Whiteness" Type="Int32" />
           <Property Name="Absorbency" Type="Decimal" />
           <Property Name="Viscosity" Type="Decimal" />
           <Property Name="Ppml" Type="Int32" />
           <Property Name="DeltaE" Type="Decimal" />
-          <NavigationProperty Name="Material" Relationship="MAWIModel.Quality_to_Material_FK" FromRole="Quality" ToRole="Material" />
+          <NavigationProperty Name="CollectionOrder" Relationship="MAWIModel.CollectionOrder_ibfk_1" FromRole="Stock" ToRole="CollectionOrder" />
+          <NavigationProperty Name="Material" Relationship="MAWIModel.Stock_ibfk_1" FromRole="Stock" ToRole="Material" />
         </EntityType>
         <EntityType Name="Supplier">
           <Key>
@@ -163,6 +225,30 @@
           <Property Name="Phone" Type="Int32" />
           <NavigationProperty Name="Material" Relationship="MAWIModel.Material_FK_LieferId" FromRole="Supplier" ToRole="Material" />
         </EntityType>
+        <Association Name="CollectionOrder_ibfk_1">
+          <End Type="MAWIModel.Stock" Role="Stock" Multiplicity="0..1" />
+          <End Type="MAWIModel.CollectionOrder" Role="CollectionOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stock">
+              <PropertyRef Name="StockId" />
+            </Principal>
+            <Dependent Role="CollectionOrder">
+              <PropertyRef Name="StockId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CollectionOrder_ibfk_2">
+          <End Type="MAWIModel.ProducedProduct" Role="ProducedProduct" Multiplicity="0..1" />
+          <End Type="MAWIModel.CollectionOrder" Role="CollectionOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProducedProduct">
+              <PropertyRef Name="ProducedProductId" />
+            </Principal>
+            <Dependent Role="CollectionOrder">
+              <PropertyRef Name="ProducedProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Material_FK_LieferId">
           <End Type="MAWIModel.Supplier" Role="Supplier" Multiplicity="1" />
           <End Type="MAWIModel.Material" Role="Material" Multiplicity="*" />
@@ -175,16 +261,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Quality_to_Material_FK">
-          <End Type="MAWIModel.Material" Role="Material" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="MAWIModel.Quality" Role="Quality" Multiplicity="*" />
+        <Association Name="Stock_ibfk_1">
+          <End Type="MAWIModel.Material" Role="Material" Multiplicity="1" />
+          <End Type="MAWIModel.Stock" Role="Stock" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Material">
               <PropertyRef Name="MaterialId" />
             </Principal>
-            <Dependent Role="Quality">
+            <Dependent Role="Stock">
               <PropertyRef Name="MaterialId" />
             </Dependent>
           </ReferentialConstraint>
@@ -195,13 +279,23 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="MAWIModelStoreContainer" CdmEntityContainer="MAWIEntities">
+          <EntitySetMapping Name="CollectionOrder">
+            <EntityTypeMapping TypeName="MAWIModel.CollectionOrder">
+              <MappingFragment StoreEntitySet="CollectionOrder">
+                <ScalarProperty Name="CustOrderId" ColumnName="CustOrderId" />
+                <ScalarProperty Name="ProducedProductId" ColumnName="ProducedProductId" />
+                <ScalarProperty Name="StockId" ColumnName="StockId" />
+                <ScalarProperty Name="CollectionId" ColumnName="CollectionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Material">
             <EntityTypeMapping TypeName="MAWIModel.Material">
               <MappingFragment StoreEntitySet="Material">
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="Unit" ColumnName="Unit" />
                 <ScalarProperty Name="PackagingSize" ColumnName="PackagingSize" />
-                <ScalarProperty Name="Stock" ColumnName="Stock" />
+                <ScalarProperty Name="MinStock" ColumnName="MinStock" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -219,16 +313,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Quality">
-            <EntityTypeMapping TypeName="MAWIModel.Quality">
-              <MappingFragment StoreEntitySet="Quality">
+          <EntitySetMapping Name="Stock">
+            <EntityTypeMapping TypeName="MAWIModel.Stock">
+              <MappingFragment StoreEntitySet="Stock">
                 <ScalarProperty Name="DeltaE" ColumnName="DeltaE" />
                 <ScalarProperty Name="Ppml" ColumnName="Ppml" />
                 <ScalarProperty Name="Viscosity" ColumnName="Viscosity" />
                 <ScalarProperty Name="Absorbency" ColumnName="Absorbency" />
                 <ScalarProperty Name="Whiteness" ColumnName="Whiteness" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="MaterialId" ColumnName="MaterialId" />
-                <ScalarProperty Name="QualityId" ColumnName="QualityId" />
+                <ScalarProperty Name="StockId" ColumnName="StockId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

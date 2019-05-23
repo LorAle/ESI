@@ -13,15 +13,13 @@ namespace MAWI_Context
         IEnumerable<String> GetSupplierNames();
         IEnumerable<MaterialModel> GetMaterial();
         MaterialModel CreateMaterial(MaterialFormModel data);
-        IEnumerable<QualityModel> GetQuality();
-        QualityModel CreatQuality(QualityFormModel data);
-        IEnumerable<QualityModel> GetQualityForMaterial(int materialId);
         IEnumerable<ProducedProductModel> GetProducedProduct();
         IEnumerable<ProducedProductModel> GetProducedProductByCustId(int customerOrderId);
         bool UpdateMaterial(int id, MaterialFormModel data);
         bool DeleteMaterial(int materialId);
         bool SupplyMaterial(String type, int amount);
         bool CollectMaterial(int amount, int? materialId, int? producedProductId, int? customerOrderId);
+        IEnumerable<QualityModel> GetQualitytById(int stockId);
 
     }
 }
