@@ -84,6 +84,7 @@
     <Compile Include="Models\MaterialModel.cs" />
     <Compile Include="Models\QualityModel.cs" />
     <Compile Include="Models\StockModel.cs" />
+    <Compile Include="Models\SupplierFormModel.cs" />
     <Compile Include="Models\SupplierModel.cs" />
     <Compile Include="ProducedProduct.cs">
       <DependentUpon>MAWI.tt</DependentUpon>

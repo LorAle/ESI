@@ -42,6 +42,17 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
+        /// Lieferanten anlegen
+        /// </summary>
+        /// <param name="data"></param>
+        [HttpPost]
+        [Route("supplier")]
+        public IEnumerable<SupplierModel> CreateSupplier(SupplierFormModel data)
+        {
+            return this._context.CreateSupplier(data);
+        }
+
+        /// <summary>
         /// gibt alle Fertigprodukte zurueck
         /// </summary>
         /// <returns></returns>

@@ -30,6 +30,25 @@ namespace MAWI_Context
             }).ToList();
         }
 
+        public IEnumerable<SupplierModel> CreateSupplier(SupplierFormModel data)
+        {
+            Supplier newSupplier = new Supplier();
+            _context.Supplier.Add(newSupplier);
+            _context.Entry(newSupplier).CurrentValues.SetValues(data);
+            _context.SaveChanges();
+            yield return new SupplierModel
+            {
+                SupplierId = newSupplier.SupplierId,
+                Name = newSupplier.Name,
+                Address = newSupplier.Address,
+                PLZ = newSupplier.PLZ,
+                City = newSupplier.City,
+                Email = newSupplier.Email,
+                Contactperson = newSupplier.Contactperson,
+                Phone = newSupplier.Phone
+            };
+        }
+
         public IEnumerable<String> GetSupplierNames()
         {
             return _context.Supplier.Select(x => x.Name).ToList();
