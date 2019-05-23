@@ -139,20 +139,7 @@ namespace ESImpl_Web_Api.Controllers
             return this._context.SupplyMaterial(type, amount);
         }
 
-        /// <summary>
-        /// SST zu Produktion Material einlagern
-        /// </summary>
-        /// <param name="materialId"></param>
-        /// <param name="amount"></param>
-        /// <param name="producedProductId"></param>
-        /// <param name="customerOrderId"></param>
-        /// <returns></returns>
-        [HttpPut]
-        [Route("order/collect")]
-        public bool CollectMaterial(int amount, int? materialId = null, int? producedProductId = null, int? customerOrderId = null)
-        {
-            return this._context.CollectMaterial(amount, materialId, producedProductId, customerOrderId);
-        }
+
 
         /// <summary>
         /// liefert Qualitaetswerte fuer ein Material zurueck
@@ -164,6 +151,41 @@ namespace ESImpl_Web_Api.Controllers
         public IEnumerable<QualityModel> GetQualitytById(int stockId)
         {
             return this._context.GetQualitytById(stockId);
+        }
+
+        /// <summary>
+        /// Neues Rohmaterial in Bestandstabelle anlegen
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("stock")]
+        public Stock CreateStockAndQuality(StockFormModel data)
+        {
+            return this._context.CreateStockAndQuality(data);
+        }
+
+        /// <summary>
+        /// gibt alle Abholauftrage zurueck
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("collectionOrder")]
+        public IEnumerable<CollectionOrder> GetCollectionOrders()
+        {
+            return this._context.GetCollectionOrders();
+        }
+
+        /// <summary>
+        /// Abholauftrag anlegen
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("collectionOrder")]
+        public CollectionOrder CreateCollectionOrder(CollectionOrderFormModel data)
+        {
+            return this._context.CreateCollectionOrder(data);
         }
 
     }

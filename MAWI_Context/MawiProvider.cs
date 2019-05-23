@@ -186,9 +186,7 @@ namespace MAWI_Context
                 ProducedProductId = x.ProducedProductId,
                 OrderId = x.OrderId,
                 Amount = x.Amount
-            }
-                ).ToList();
-            throw new NotImplementedException();
+            }).ToList();
         }
 
         public IEnumerable<ProducedProductModel> GetProducedProductByCustId(int custOrderId)
@@ -223,6 +221,69 @@ namespace MAWI_Context
                 }).ToList();
             }
             return new List<QualityModel>();
+        }
+
+        public Stock CreateStockAndQuality(StockFormModel data)
+        {
+            Stock newStock = new Stock();
+            _context.Stock.Add(newStock);
+            _context.Entry(newStock).CurrentValues.SetValues(data);
+            _context.SaveChanges();
+            return new Stock{
+                StockId = newStock.StockId,
+                MaterialId = newStock.MaterialId,
+                Amount = newStock.Amount,
+                Whiteness = newStock.Whiteness,
+                Absorbency = newStock.Absorbency,
+                Viscosity = newStock.Viscosity,
+                Ppml = newStock.Ppml,
+                DeltaE = newStock.DeltaE
+            };
+        }
+
+        public IEnumerable<CollectionOrder> GetCollectionOrders()
+        {
+            return _context.CollectionOrder.Select(x => new CollectionOrder
+            {
+                CollectionId = x.CollectionId,
+                StockId  = x.StockId,
+                ProducedProductId = x.ProducedProductId,
+                CustOrderId = x.CustOrderId
+            }).ToList();
+        }
+
+        public CollectionOrder CreateCollectionOrder(CollectionOrderFormModel data)
+        {
+            bool valid = false;
+            int producedProdId=100;
+            CollectionOrder newCollectionOrder = new CollectionOrder();
+            // Falls Rohmaterial wieder eingelagert werden muss, muss geprueft werden ob es StockId existiert
+            if (data.StockId != null || data.StockId != 0)
+            {
+                valid = _context.Stock.Any(x => x.StockId == data.StockId);
+            }
+            // wenn Fertigprodukt eingelagert werden soll, darf die Id nicht null sein
+            if (data.CustOrderId != null || data.CustOrderId != 0)
+            {
+                producedProdId = _context.ProducedProduct.Max(x => x.ProducedProductId) + 1;
+                valid = true;
+            }
+            if (valid)
+            {
+                _context.CollectionOrder.Add(newCollectionOrder);
+                _context.Entry(newCollectionOrder).CurrentValues.SetValues(data);
+                _context.SaveChanges();
+
+                return new CollectionOrder
+                {
+                    StockId = newCollectionOrder.StockId,
+                    ProducedProductId = producedProdId,
+                    CustOrderId = newCollectionOrder.CustOrderId,
+                    Amount = newCollectionOrder.Amount
+                };
+            }
+            return null;
+            
         }
     }
 }

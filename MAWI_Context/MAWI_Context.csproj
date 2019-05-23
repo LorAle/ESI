@@ -77,12 +77,14 @@
       <DependentUpon>MAWI.edmx</DependentUpon>
     </Compile>
     <Compile Include="MawiProvider.cs" />
+    <Compile Include="Models\CollectionOrderFormModel.cs" />
     <Compile Include="Models\CollectionOrderModel.cs" />
     <Compile Include="Models\MaterialFormModel.cs" />
     <Compile Include="Models\MaterialOrderModel.cs" />
     <Compile Include="Models\ProducedProductModel.cs" />
     <Compile Include="Models\MaterialModel.cs" />
     <Compile Include="Models\QualityModel.cs" />
+    <Compile Include="Models\StockFormModel.cs" />
     <Compile Include="Models\StockModel.cs" />
     <Compile Include="Models\SupplierFormModel.cs" />
     <Compile Include="Models\SupplierModel.cs" />

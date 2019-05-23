@@ -6,17 +6,15 @@ using System.Threading.Tasks;
 
 namespace MAWI_Context.Models
 {
-    public class CollectionOrderModel
+    public class CollectionOrderFormModel
     {
 
-        public int CollectionId { get; set; }
+        // public int CollectionId { get; set; }
         public Nullable<int> StockId { get; set; }
-        public Nullable<int> ProducedProductId { get; set; }
+        // public Nullable<int> ProducedProductId { get; set; }
         public Nullable<int> CustOrderId { get; set; }
         public int Amount { get; set; }
 
-        public virtual Stock Stock { get; set; }
-        public virtual ProducedProduct ProducedProduct { get; set; }
 
     }
 }

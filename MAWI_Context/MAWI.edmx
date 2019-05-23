@@ -13,6 +13,7 @@
           <Property Name="StockId" Type="int" />
           <Property Name="ProducedProductId" Type="int" />
           <Property Name="CustOrderId" Type="int" />
+          <Property Name="Amount" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Material">
           <Key>
@@ -168,6 +169,7 @@
           <Property Name="StockId" Type="Int32" />
           <Property Name="ProducedProductId" Type="Int32" />
           <Property Name="CustOrderId" Type="Int32" />
+          <Property Name="Amount" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Stock" Relationship="MAWIModel.CollectionOrder_ibfk_1" FromRole="CollectionOrder" ToRole="Stock" />
           <NavigationProperty Name="ProducedProduct" Relationship="MAWIModel.CollectionOrder_ibfk_2" FromRole="CollectionOrder" ToRole="ProducedProduct" />
         </EntityType>
@@ -282,6 +284,7 @@
           <EntitySetMapping Name="CollectionOrder">
             <EntityTypeMapping TypeName="MAWIModel.CollectionOrder">
               <MappingFragment StoreEntitySet="CollectionOrder">
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="CustOrderId" ColumnName="CustOrderId" />
                 <ScalarProperty Name="ProducedProductId" ColumnName="ProducedProductId" />
                 <ScalarProperty Name="StockId" ColumnName="StockId" />

@@ -20,7 +20,10 @@ namespace MAWI_Context
         bool SupplyMaterial(String type, int amount);
         bool CollectMaterial(int amount, int? materialId, int? producedProductId, int? customerOrderId);
         IEnumerable<QualityModel> GetQualitytById(int stockId);
+        Stock CreateStockAndQuality(StockFormModel data);
         IEnumerable<SupplierModel> CreateSupplier(SupplierFormModel data);
+        IEnumerable<CollectionOrder> GetCollectionOrders();
+        CollectionOrder CreateCollectionOrder(CollectionOrderFormModel data);
 
     }
 }
