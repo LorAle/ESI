@@ -36,7 +36,7 @@
           <Property Name="MaterialId" Type="int" Nullable="false" />
           <Property Name="Whiteness" Type="int" />
           <Property Name="Absorbency" Type="decimal" Precision="10" Scale="2" />
-          <Property Name="Viscosity" Type="int" />
+          <Property Name="Viscosity" Type="decimal" Precision="10" Scale="5" />
           <Property Name="Ppml" Type="int" />
           <Property Name="DeltaE" Type="decimal" Precision="10" Scale="2" />
         </EntityType>
@@ -144,7 +144,7 @@
           <Property Name="MaterialId" Type="Int32" Nullable="false" />
           <Property Name="Whiteness" Type="Int32" />
           <Property Name="Absorbency" Type="Decimal" />
-          <Property Name="Viscosity" Type="Int32" />
+          <Property Name="Viscosity" Type="Decimal" />
           <Property Name="Ppml" Type="Int32" />
           <Property Name="DeltaE" Type="Decimal" />
           <NavigationProperty Name="Material" Relationship="MAWIModel.Quality_to_Material_FK" FromRole="Quality" ToRole="Material" />

@@ -65,6 +65,18 @@ namespace MAWI_Context
             return true;
         }
 
+        public bool DeleteMaterial(int materialId)
+        {
+            Material materialFromDB = _context.Material.Find(materialId);
+            if (materialFromDB == null)
+            {
+                return false;
+            }
+            _context.Material.Remove(materialFromDB);
+            _context.SaveChanges();
+            return true;
+        }
+
         public bool SupplyMaterial(String type, int amount)
         {
             if (type != null && amount > 0)

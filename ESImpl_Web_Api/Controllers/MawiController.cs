@@ -81,10 +81,22 @@ namespace ESImpl_Web_Api.Controllers
         /// <param name="materialId"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("material/{materialId:int}")]
+        [Route("quality/{materialId:int}")]
         public IEnumerable<QualityModel> GetQualityForMaterial(int materialId)
         {
             return this._context.GetQualityForMaterial(materialId);
+        }
+
+        /// <summary>
+        /// entfernt Material aus DB
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route("material/{materialId:int}")]
+        public bool DeleteMaterial(int materialId)
+        {
+            return this._context.DeleteMaterial(materialId);
         }
 
         /// <summary>
