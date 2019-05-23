@@ -31,6 +31,24 @@ namespace PROD_Context
                 ProductionStatusId = x.ProductionStatusId
             }).OrderBy(x=> x.OrderPosition).ToList();
         }
+        public ProductionOrderModel GetProductionOrder(int orderId)
+        {
+            var order = _context.ProductionOrder.Where(x => x.Id == orderId).SingleOrDefault();
+                
+            return new ProductionOrderModel
+            {
+                Id = order.Id,
+                Amount = order.Amount,
+                Color = order.Color,
+                CustomerOrderId = order.CustomerOrderId,
+                DeliveryDate = order.DeliveryDate,
+                Motiv = order.Motiv,
+                OrderDate = order.OrderDate,
+                OrderItem = order.OrderItem,
+                OrderPosition = order.OrderPosition,
+                ProductionStatusId = order.ProductionStatusId
+            };
+        }
 
         public ProductionOrderModel CreateProductionOrder(ProductionOrderFormModel data)
         {

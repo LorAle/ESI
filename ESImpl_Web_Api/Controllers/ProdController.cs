@@ -37,6 +37,18 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
+        /// Return the order
+        /// </summary>
+        /// <param name="orderId">The Id of the requested order</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{orderId:int}")]
+        public ProductionOrderModel GetProductionOrder(int orderId)
+        {
+            return this._context.GetProductionOrder(orderId);
+        }
+
+        /// <summary>
         /// Creates a new production order entry and return the object with the generated id
         /// </summary>
         /// <param name="data">The Data of the new order</param>
@@ -87,7 +99,7 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
-        /// Updates the entry of the order with the new sorting number
+        /// Updates all ´InPlanning' orders with the new sorting number
         /// </summary>
         /// <returns></returns>
         [HttpPut]
