@@ -14,15 +14,12 @@ namespace MAWI_Context
     
     public partial class ProducedProduct
     {
-        public ProducedProduct()
-        {
-            this.CollectionOrder = new HashSet<CollectionOrder>();
-        }
-    
         public int ProducedProductId { get; set; }
-        public int OrderId { get; set; }
+        public int ProductionId { get; set; }
+        public int CustOrderId { get; set; }
+        public Nullable<int> CollectionOrderId { get; set; }
         public Nullable<int> Amount { get; set; }
     
-        public virtual ICollection<CollectionOrder> CollectionOrder { get; set; }
+        public virtual CollectionOrder CollectionOrder { get; set; }
     }
 }

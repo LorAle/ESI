@@ -15,6 +15,7 @@ namespace MAWI_Context
         MaterialModel CreateMaterial(MaterialFormModel data);
         IEnumerable<ProducedProductModel> GetProducedProduct();
         IEnumerable<ProducedProductModel> GetProducedProductByCustId(int customerOrderId);
+        IEnumerable<ProducedProductModel> GetProducedProductByProductionId(int productionId);
         bool UpdateMaterial(int id, MaterialFormModel data);
         bool DeleteMaterial(int materialId);
         bool SupplyMaterial(String type, int amount);
@@ -24,6 +25,7 @@ namespace MAWI_Context
         IEnumerable<SupplierModel> CreateSupplier(SupplierFormModel data);
         IEnumerable<CollectionOrder> GetCollectionOrders();
         CollectionOrder CreateCollectionOrder(CollectionOrderFormModel data);
+        bool UpdateCollectionOrder(int collectionOrderId);
 
     }
 }

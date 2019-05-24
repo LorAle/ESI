@@ -76,6 +76,18 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
+        /// gibt die Fertigprodukte anhand eines Fertigungsauftrags zurueck
+        /// </summary>
+        /// <param name="productionId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("producedProductProduction/{productionId:int}")]
+        public IEnumerable<ProducedProductModel> GetProducedProductByProductionId(int productionId)
+        {
+            return this._context.GetProducedProductByProductionId(productionId);
+        }
+
+        /// <summary>
         /// gibt alle Materialien zurueck
         /// </summary>
         /// <returns></returns>
@@ -85,8 +97,6 @@ namespace ESImpl_Web_Api.Controllers
         {
             return this._context.GetMaterial();
         }
-
-
 
         /// <summary>
         /// entfernt Material aus DB
@@ -144,7 +154,7 @@ namespace ESImpl_Web_Api.Controllers
         /// <summary>
         /// liefert Qualitaetswerte fuer ein Material zurueck
         /// </summary>
-        /// <param name="materialId"></param>
+        /// <param name="stockId"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("quality/{stockId:int}")]
@@ -186,6 +196,18 @@ namespace ESImpl_Web_Api.Controllers
         public CollectionOrder CreateCollectionOrder(CollectionOrderFormModel data)
         {
             return this._context.CreateCollectionOrder(data);
+        }
+
+        /// <summary>
+        /// Um Abholauftrag einzulagern
+        /// </summary>
+        /// <param name="collectionOrderId"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("collectionOrder/{collectionOrderId:int}")]
+        public bool UpdateCollectionOrder(int collectionOrderId)
+        {
+            return this._context.UpdateCollectionOrder(collectionOrderId);
         }
 
     }

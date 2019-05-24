@@ -5,13 +5,13 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="8cdd2700afdd47a9b3f279ad628da6e2" Name="Diagram1">
-        <EntityTypeShape EntityType="MAWIModel.CollectionOrder" Width="1.5" PointX="7.5" PointY="1.375" />
+        <EntityTypeShape EntityType="MAWIModel.CollectionOrder" Width="1.5" PointX="7.5" PointY="1.25" />
         <EntityTypeShape EntityType="MAWIModel.Material" Width="1.5" PointX="3" PointY="1" />
-        <EntityTypeShape EntityType="MAWIModel.ProducedProduct" Width="1.5" PointX="5.25" PointY="5.625" />
+        <EntityTypeShape EntityType="MAWIModel.ProducedProduct" Width="1.5" PointX="9.75" PointY="1.5" />
         <EntityTypeShape EntityType="MAWIModel.Stock" Width="1.5" PointX="5.25" PointY="1.125" />
         <EntityTypeShape EntityType="MAWIModel.Supplier" Width="1.5" PointX="0.75" PointY="1.125" />
         <AssociationConnector Association="MAWIModel.CollectionOrder_ibfk_1" />
-        <AssociationConnector Association="MAWIModel.CollectionOrder_ibfk_2" />
+        <AssociationConnector Association="MAWIModel.ProdProduct_CollOrder_FK" />
         <AssociationConnector Association="MAWIModel.Material_FK_LieferId" />
         <AssociationConnector Association="MAWIModel.Stock_ibfk_1" />
       </Diagram>

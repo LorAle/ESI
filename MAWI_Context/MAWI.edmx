@@ -11,9 +11,10 @@
           </Key>
           <Property Name="CollectionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="StockId" Type="int" />
-          <Property Name="ProducedProductId" Type="int" />
+          <Property Name="ProductionId" Type="int" />
           <Property Name="CustOrderId" Type="int" />
-          <Property Name="Amount" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="int" />
+          <Property Name="State" Type="varchar" MaxLength="5" />
         </EntityType>
         <EntityType Name="Material">
           <Key>
@@ -32,9 +33,12 @@
         <EntityType Name="ProducedProduct">
           <Key>
             <PropertyRef Name="ProducedProductId" />
+            <PropertyRef Name="ProductionId" />
           </Key>
           <Property Name="ProducedProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="OrderId" Type="int" Nullable="false" />
+          <Property Name="ProductionId" Type="int" Nullable="false" />
+          <Property Name="CustOrderId" Type="int" Nullable="false" />
+          <Property Name="CollectionOrderId" Type="int" />
           <Property Name="Amount" Type="int" />
         </EntityType>
         <EntityType Name="Stock">
@@ -75,18 +79,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="CollectionOrder_ibfk_2">
-          <End Role="ProducedProduct" Type="Self.ProducedProduct" Multiplicity="0..1" />
-          <End Role="CollectionOrder" Type="Self.CollectionOrder" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ProducedProduct">
-              <PropertyRef Name="ProducedProductId" />
-            </Principal>
-            <Dependent Role="CollectionOrder">
-              <PropertyRef Name="ProducedProductId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Material_FK_LieferId">
           <End Role="Supplier" Type="Self.Supplier" Multiplicity="1" />
           <End Role="Material" Type="Self.Material" Multiplicity="*" />
@@ -96,6 +88,18 @@
             </Principal>
             <Dependent Role="Material">
               <PropertyRef Name="SupplierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ProdProduct_CollOrder_FK">
+          <End Role="CollectionOrder" Type="Self.CollectionOrder" Multiplicity="1" />
+          <End Role="ProducedProduct" Type="Self.ProducedProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionOrder">
+              <PropertyRef Name="CollectionId" />
+            </Principal>
+            <Dependent Role="ProducedProduct">
+              <PropertyRef Name="CustOrderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -121,13 +125,13 @@
             <End Role="Stock" EntitySet="Stock" />
             <End Role="CollectionOrder" EntitySet="CollectionOrder" />
           </AssociationSet>
-          <AssociationSet Name="CollectionOrder_ibfk_2" Association="Self.CollectionOrder_ibfk_2">
-            <End Role="ProducedProduct" EntitySet="ProducedProduct" />
-            <End Role="CollectionOrder" EntitySet="CollectionOrder" />
-          </AssociationSet>
           <AssociationSet Name="Material_FK_LieferId" Association="Self.Material_FK_LieferId">
             <End Role="Supplier" EntitySet="Supplier" />
             <End Role="Material" EntitySet="Material" />
+          </AssociationSet>
+          <AssociationSet Name="ProdProduct_CollOrder_FK" Association="Self.ProdProduct_CollOrder_FK">
+            <End Role="CollectionOrder" EntitySet="CollectionOrder" />
+            <End Role="ProducedProduct" EntitySet="ProducedProduct" />
           </AssociationSet>
           <AssociationSet Name="Stock_ibfk_1" Association="Self.Stock_ibfk_1">
             <End Role="Material" EntitySet="Material" />
@@ -148,9 +152,9 @@
             <End Role="Stock" EntitySet="Stock" />
             <End Role="CollectionOrder" EntitySet="CollectionOrder" />
           </AssociationSet>
-          <AssociationSet Name="CollectionOrder_ibfk_2" Association="MAWIModel.CollectionOrder_ibfk_2">
-            <End Role="ProducedProduct" EntitySet="ProducedProduct" />
+          <AssociationSet Name="ProdProduct_CollOrder_FK" Association="MAWIModel.ProdProduct_CollOrder_FK">
             <End Role="CollectionOrder" EntitySet="CollectionOrder" />
+            <End Role="ProducedProduct" EntitySet="ProducedProduct" />
           </AssociationSet>
           <AssociationSet Name="Material_FK_LieferId" Association="MAWIModel.Material_FK_LieferId">
             <End Role="Supplier" EntitySet="Supplier" />
@@ -167,11 +171,12 @@
           </Key>
           <Property Name="CollectionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="StockId" Type="Int32" />
-          <Property Name="ProducedProductId" Type="Int32" />
+          <Property Name="ProductionId" Type="Int32" />
           <Property Name="CustOrderId" Type="Int32" />
-          <Property Name="Amount" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Int32" />
+          <Property Name="State" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Stock" Relationship="MAWIModel.CollectionOrder_ibfk_1" FromRole="CollectionOrder" ToRole="Stock" />
-          <NavigationProperty Name="ProducedProduct" Relationship="MAWIModel.CollectionOrder_ibfk_2" FromRole="CollectionOrder" ToRole="ProducedProduct" />
+          <NavigationProperty Name="ProducedProduct" Relationship="MAWIModel.ProdProduct_CollOrder_FK" FromRole="CollectionOrder" ToRole="ProducedProduct" />
         </EntityType>
         <EntityType Name="Material">
           <Key>
@@ -192,11 +197,14 @@
         <EntityType Name="ProducedProduct">
           <Key>
             <PropertyRef Name="ProducedProductId" />
+            <PropertyRef Name="ProductionId" />
           </Key>
           <Property Name="ProducedProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="OrderId" Type="Int32" Nullable="false" />
+          <Property Name="ProductionId" Type="Int32" Nullable="false" />
+          <Property Name="CustOrderId" Type="Int32" Nullable="false" />
+          <Property Name="CollectionOrderId" Type="Int32" />
           <Property Name="Amount" Type="Int32" />
-          <NavigationProperty Name="CollectionOrder" Relationship="MAWIModel.CollectionOrder_ibfk_2" FromRole="ProducedProduct" ToRole="CollectionOrder" />
+          <NavigationProperty Name="CollectionOrder" Relationship="MAWIModel.ProdProduct_CollOrder_FK" FromRole="ProducedProduct" ToRole="CollectionOrder" />
         </EntityType>
         <EntityType Name="Stock">
           <Key>
@@ -239,15 +247,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="CollectionOrder_ibfk_2">
-          <End Type="MAWIModel.ProducedProduct" Role="ProducedProduct" Multiplicity="0..1" />
-          <End Type="MAWIModel.CollectionOrder" Role="CollectionOrder" Multiplicity="*" />
+        <Association Name="ProdProduct_CollOrder_FK">
+          <End Type="MAWIModel.CollectionOrder" Role="CollectionOrder" Multiplicity="1" />
+          <End Type="MAWIModel.ProducedProduct" Role="ProducedProduct" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ProducedProduct">
-              <PropertyRef Name="ProducedProductId" />
+            <Principal Role="CollectionOrder">
+              <PropertyRef Name="CollectionId" />
             </Principal>
-            <Dependent Role="CollectionOrder">
-              <PropertyRef Name="ProducedProductId" />
+            <Dependent Role="ProducedProduct">
+              <PropertyRef Name="CustOrderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -284,9 +292,10 @@
           <EntitySetMapping Name="CollectionOrder">
             <EntityTypeMapping TypeName="MAWIModel.CollectionOrder">
               <MappingFragment StoreEntitySet="CollectionOrder">
+                <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
                 <ScalarProperty Name="CustOrderId" ColumnName="CustOrderId" />
-                <ScalarProperty Name="ProducedProductId" ColumnName="ProducedProductId" />
+                <ScalarProperty Name="ProductionId" ColumnName="ProductionId" />
                 <ScalarProperty Name="StockId" ColumnName="StockId" />
                 <ScalarProperty Name="CollectionId" ColumnName="CollectionId" />
               </MappingFragment>
@@ -311,7 +320,9 @@
             <EntityTypeMapping TypeName="MAWIModel.ProducedProduct">
               <MappingFragment StoreEntitySet="ProducedProduct">
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="CollectionOrderId" ColumnName="CollectionOrderId" />
+                <ScalarProperty Name="CustOrderId" ColumnName="CustOrderId" />
+                <ScalarProperty Name="ProductionId" ColumnName="ProductionId" />
                 <ScalarProperty Name="ProducedProductId" ColumnName="ProducedProductId" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -122,19 +122,18 @@ namespace MAWI_Context
                         }
                     }
             }
-
             return false;
         }
 
-        public bool CollectMaterial(int amount, int? materialId, int? producedProductId, int? customerOrderId)
+        public bool CollectMaterial(int amount, int? materialId, int? productionId, int? customerOrderId)
         {
             // wenn materialId nicht befuellt ist, dann handelt es sich um ein Fertigprodukt
-            if ((materialId == null || materialId == 0) && producedProductId != null && customerOrderId != null)
+            if ((materialId == null || materialId == 0) && productionId != null && customerOrderId != null)
             {
                 ProducedProduct newProdProduct = new ProducedProduct();
                 newProdProduct.Amount = amount;
-                newProdProduct.OrderId = customerOrderId.GetValueOrDefault();
-                newProdProduct.ProducedProductId = producedProductId.GetValueOrDefault();
+                newProdProduct.CustOrderId = customerOrderId.GetValueOrDefault();
+                newProdProduct.ProductionId = productionId.GetValueOrDefault();
                 _context.ProducedProduct.Add(newProdProduct);
                 _context.SaveChanges();
                 return true;
@@ -184,7 +183,9 @@ namespace MAWI_Context
             return _context.ProducedProduct.Select(x => new ProducedProductModel
             {
                 ProducedProductId = x.ProducedProductId,
-                OrderId = x.OrderId,
+                ProductionId = x.ProductionId,
+                CustOrderId = x.CustOrderId,
+                CollectionOrderId = x.CollectionOrderId,
                 Amount = x.Amount
             }).ToList();
         }
@@ -192,13 +193,32 @@ namespace MAWI_Context
         public IEnumerable<ProducedProductModel> GetProducedProductByCustId(int custOrderId)
         {
 
-            var producedProductFromDB = _context.ProducedProduct.Where(x => x.OrderId == custOrderId);
+            var producedProductFromDB = _context.ProducedProduct.Where(x => x.CustOrderId == custOrderId);
             if (producedProductFromDB != null)
             {
                 return producedProductFromDB.Select(x => new ProducedProductModel
                 {
                     ProducedProductId = x.ProducedProductId,
-                    OrderId = x.OrderId,
+                    CustOrderId = x.CustOrderId,
+                    CollectionOrderId = x.CollectionOrderId,
+                    Amount = x.Amount
+                }).ToList();
+            }
+            return new List<ProducedProductModel>();
+        }
+
+        public IEnumerable<ProducedProductModel> GetProducedProductByProductionId(int productionId)
+        {
+
+            var producedProductFromDB = _context.ProducedProduct.Where(x => x.ProductionId == productionId);
+            if (producedProductFromDB != null)
+            {
+                return producedProductFromDB.Select(x => new ProducedProductModel
+                {
+                    ProducedProductId = x.ProducedProductId,
+                    ProductionId = x.ProductionId,
+                    CustOrderId = x.CustOrderId,
+                    CollectionOrderId = x.CollectionOrderId,
                     Amount = x.Amount
                 }).ToList();
             }
@@ -247,16 +267,17 @@ namespace MAWI_Context
             {
                 CollectionId = x.CollectionId,
                 StockId  = x.StockId,
-                ProducedProductId = x.ProducedProductId,
-                CustOrderId = x.CustOrderId
+                ProductionId = x.ProductionId,
+                CustOrderId = x.CustOrderId,
+                State = x.State
             }).ToList();
         }
 
         public CollectionOrder CreateCollectionOrder(CollectionOrderFormModel data)
         {
             bool valid = false;
-            int producedProdId=100;
             CollectionOrder newCollectionOrder = new CollectionOrder();
+            newCollectionOrder.State = "New";
             // Falls Rohmaterial wieder eingelagert werden muss, muss geprueft werden ob es StockId existiert
             if (data.StockId != null || data.StockId != 0)
             {
@@ -265,7 +286,6 @@ namespace MAWI_Context
             // wenn Fertigprodukt eingelagert werden soll, darf die Id nicht null sein
             if (data.CustOrderId != null || data.CustOrderId != 0)
             {
-                producedProdId = _context.ProducedProduct.Max(x => x.ProducedProductId) + 1;
                 valid = true;
             }
             if (valid)
@@ -277,13 +297,89 @@ namespace MAWI_Context
                 return new CollectionOrder
                 {
                     StockId = newCollectionOrder.StockId,
-                    ProducedProductId = producedProdId,
+                    ProductionId = newCollectionOrder.ProductionId,
                     CustOrderId = newCollectionOrder.CustOrderId,
-                    Amount = newCollectionOrder.Amount
+                    Amount = newCollectionOrder.Amount,
+                    State = newCollectionOrder.State
                 };
             }
             return null;
-            
+        }
+
+        public bool UpdateCollectionOrder(int collectionOrderId)
+        {
+            if (collectionOrderId == 0) return false;
+
+            bool valid = false;
+
+            CollectionOrder colOrder = _context.CollectionOrder.Find(collectionOrderId);
+            var collectionOrderFromDB = _context.CollectionOrder.Where(x => x.CollectionId == collectionOrderId);
+            if (colOrder != null)
+            {
+                var productionId = colOrder.ProductionId;
+                var stockId = colOrder.StockId;
+                if (productionId != null)
+                {
+                    valid = updateProducedProductFromCollectionOrder(colOrder, productionId);
+                }
+                if (stockId != null)
+                {
+                    valid = updateStockFromCollectionOrder(colOrder, stockId);
+                }
+
+                // wenn Stock-Tabelle oder Produced-Product-Tabelle geupdatet wurden, dann true
+                if (valid)
+                {
+                    var state = colOrder.State = "Done";
+                    // Speichert Aenderungen
+                    _context.Entry(colOrder).CurrentValues.SetValues(state);
+                    _context.SaveChanges();
+
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool updateProducedProductFromCollectionOrder(CollectionOrder colOrder, int? productionId)
+        {
+            if (colOrder != null && productionId != null)
+            {
+                ProducedProduct newProducedProduct = new ProducedProduct
+                {
+                    ProductionId = productionId.GetValueOrDefault(),
+                    CustOrderId = colOrder.CustOrderId.GetValueOrDefault(),
+                    CollectionOrderId = colOrder.CollectionId,
+                    Amount = colOrder.Amount.GetValueOrDefault()
+                };
+                _context.ProducedProduct.Add(newProducedProduct);
+                //_context.Entry(newCollectionOrder).CurrentValues.SetValues(data);
+                _context.SaveChanges();
+
+                return true;
+            }
+            return false;
+        }
+
+        private bool updateStockFromCollectionOrder(CollectionOrder colOrder, int? stockId)
+        {
+            if (colOrder != null && stockId != null)
+            {
+                Stock stockFromDB = _context.Stock.Find(stockId);
+                if (stockFromDB == null)
+                {
+                    return false;
+                }
+                // holt sich aktuellen Amount 
+                var amount = colOrder.Amount.GetValueOrDefault();
+                // erhoeht Amount um den neu zu eingelagerten Bestand
+                var newAmount = stockFromDB.Amount = stockFromDB.Amount.GetValueOrDefault() + amount;
+                // Speichert Aenderungen
+                _context.Entry(stockFromDB).CurrentValues.SetValues(newAmount);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
         }
     }
 }
