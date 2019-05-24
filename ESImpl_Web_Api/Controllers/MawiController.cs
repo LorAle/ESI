@@ -181,9 +181,31 @@ namespace ESImpl_Web_Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("collectionOrder")]
-        public IEnumerable<CollectionOrder> GetCollectionOrders()
+        public IEnumerable<CollectionOrderModel> GetCollectionOrders()
         {
             return this._context.GetCollectionOrders();
+        }
+
+        /// <summary>
+        /// gibt alle Abholauftrage mit Status New zurueck
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("collectionOrder/new")]
+        public IEnumerable<CollectionOrderModel> GetCollectionOrdersByStateNew()
+        {
+            return this._context.GetCollectionOrdersByState("New");
+        }
+
+        /// <summary>
+        /// gibt alle Abholauftrage mit Status Done zurueck
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("collectionOrder/done")]
+        public IEnumerable<CollectionOrderModel> GetCollectionOrdersByStateDone()
+        {
+            return this._context.GetCollectionOrdersByState("Done");
         }
 
         /// <summary>

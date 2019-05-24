@@ -23,7 +23,8 @@ namespace MAWI_Context
         IEnumerable<QualityModel> GetQualitytById(int stockId);
         Stock CreateStockAndQuality(StockFormModel data);
         IEnumerable<SupplierModel> CreateSupplier(SupplierFormModel data);
-        IEnumerable<CollectionOrder> GetCollectionOrders();
+        IEnumerable<CollectionOrderModel> GetCollectionOrders();
+        IEnumerable<CollectionOrderModel> GetCollectionOrdersByState(String state);
         CollectionOrder CreateCollectionOrder(CollectionOrderFormModel data);
         bool UpdateCollectionOrder(int collectionOrderId);
 

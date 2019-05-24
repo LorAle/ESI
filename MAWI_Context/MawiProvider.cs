@@ -261,9 +261,9 @@ namespace MAWI_Context
             };
         }
 
-        public IEnumerable<CollectionOrder> GetCollectionOrders()
+        public IEnumerable<CollectionOrderModel> GetCollectionOrders()
         {
-            return _context.CollectionOrder.Select(x => new CollectionOrder
+            return _context.CollectionOrder.Select(x => new CollectionOrderModel
             {
                 CollectionId = x.CollectionId,
                 StockId  = x.StockId,
@@ -271,6 +271,26 @@ namespace MAWI_Context
                 CustOrderId = x.CustOrderId,
                 State = x.State
             }).ToList();
+        }
+
+        public IEnumerable<CollectionOrderModel> GetCollectionOrdersByState(String state)
+        {
+            if(state == "New" || state == "Done")
+            {
+                var collectionOrderFromDB = _context.CollectionOrder.Where(x => x.State.Equals(state));
+                if (collectionOrderFromDB != null)
+                {
+                    return collectionOrderFromDB.Select(x => new CollectionOrderModel
+                    {
+                        CollectionId = x.CollectionId,
+                        StockId = x.StockId,
+                        ProductionId = x.ProductionId,
+                        CustOrderId = x.CustOrderId,
+                        State = x.State
+                    }).ToList();
+                }
+            }
+            return new List<CollectionOrderModel>();
         }
 
         public CollectionOrder CreateCollectionOrder(CollectionOrderFormModel data)
