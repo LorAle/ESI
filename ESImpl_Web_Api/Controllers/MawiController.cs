@@ -42,6 +42,18 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
+        /// Gibt die Lieferanten anhand der Id zurueck
+        /// </summary>
+        /// <param name="supplierId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("suppliers/{supplierId:int}")]
+        public IEnumerable<SupplierModel> GetSupplierById(int supplierId)
+        {
+            return this._context.GetSupplierById(supplierId);
+        }
+
+        /// <summary>
         /// Lieferanten anlegen
         /// </summary>
         /// <param name="data"></param>
@@ -133,6 +145,18 @@ namespace ESImpl_Web_Api.Controllers
         public bool UpdateMaterial(int id, [FromBody] MaterialFormModel data)
         {
             return this._context.UpdateMaterial(id, data);
+        }
+
+        /// <summary>
+        /// gibt MAterial anhand der ID zurueck
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("material/{materialId:int}")]
+        public IEnumerable<MaterialModel> GetMaterialById(int materialId)
+        {
+            return this._context.GetMaterialById(materialId);
         }
 
         /// <summary>

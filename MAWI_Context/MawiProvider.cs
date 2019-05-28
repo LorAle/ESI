@@ -48,6 +48,48 @@ namespace MAWI_Context
                 Phone = newSupplier.Phone
             };
         }
+        public IEnumerable<SupplierModel> GetSupplierById(int supplierId)
+        {
+
+            var supplierFromDB = _context.Supplier.Where(x => x.SupplierId == supplierId);
+            if (supplierFromDB != null)
+            {
+                return supplierFromDB.Select(x => new SupplierModel
+                {
+                    SupplierId = x.SupplierId,
+                    Name = x.Name,
+                    Address = x.Address,
+                    PLZ = x.PLZ,
+                    City = x.City,
+                    Email = x.Email,
+                    Contactperson = x.Contactperson,
+                    Phone = x.Phone
+                }).ToList();
+            }
+            return new List<SupplierModel>();
+        }
+
+        public IEnumerable<MaterialModel> GetMaterialById(int materialId)
+        {
+
+            var materialFromDB = _context.Material.Where(x => x.MaterialId == materialId);
+            if (materialFromDB != null)
+            {
+                return materialFromDB.Select(x => new MaterialModel
+                {
+                    MaterialId = x.MaterialId,
+                    SupplierId = x.SupplierId,
+                    Name = x.Name,
+                    DeliveryDate = x.DeliveryDate,
+                    Description = x.Description,
+                    MinStock = x.MinStock,
+                    PackagingSize = x.PackagingSize,
+                    Unit = x.Unit,
+                    Price = x.Price
+                }).ToList();
+            }
+            return new List<MaterialModel>();
+        }
 
         public IEnumerable<String> GetSupplierNames()
         {
