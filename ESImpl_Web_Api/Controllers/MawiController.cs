@@ -160,6 +160,18 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
+        /// gibt Material anhand der SupplierID zurueck
+        /// </summary>
+        /// <param name="supplierId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("material/supplier/{supplierId:int}")]
+        public IEnumerable<MaterialModel> GetMaterialBySupplierId(int supplierId)
+        {
+            return this._context.GetMaterialBySupplierId(supplierId);
+        }
+
+        /// <summary>
         /// SST zu Produktion - Material bereitstellen
         /// Fuehrt update auf DB aus
         /// </summary>

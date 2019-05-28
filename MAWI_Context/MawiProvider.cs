@@ -91,6 +91,28 @@ namespace MAWI_Context
             return new List<MaterialModel>();
         }
 
+        public IEnumerable<MaterialModel> GetMaterialBySupplierId(int supplierId)
+        {
+
+            var materialFromDB = _context.Material.Where(x => x.SupplierId == supplierId);
+            if (materialFromDB != null)
+            {
+                return materialFromDB.Select(x => new MaterialModel
+                {
+                    MaterialId = x.MaterialId,
+                    SupplierId = x.SupplierId,
+                    Name = x.Name,
+                    DeliveryDate = x.DeliveryDate,
+                    Description = x.Description,
+                    MinStock = x.MinStock,
+                    PackagingSize = x.PackagingSize,
+                    Unit = x.Unit,
+                    Price = x.Price
+                }).ToList();
+            }
+            return new List<MaterialModel>();
+        }
+
         public IEnumerable<String> GetSupplierNames()
         {
             return _context.Supplier.Select(x => x.Name).ToList();

@@ -14,6 +14,7 @@ namespace MAWI_Context
         IEnumerable<SupplierModel> GetSupplierById(int supplierId);
         IEnumerable<MaterialModel> GetMaterial();
         IEnumerable<MaterialModel> GetMaterialById(int materialId);
+        IEnumerable<MaterialModel> GetMaterialBySupplierId(int supplierId);
         MaterialModel CreateMaterial(MaterialFormModel data);
         IEnumerable<ProducedProductModel> GetProducedProduct();
         IEnumerable<ProducedProductModel> GetProducedProductByCustId(int customerOrderId);
