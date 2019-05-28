@@ -14,6 +14,7 @@ namespace VEVE_Context
         IEnumerable<OrderItemsModel> GetItemsByOrder(int orderId);
 
         IEnumerable<CustomerOrderModel> GetCustomerOrders();
+        IEnumerable<CustomerOrderModel> GetCustomerOrdersByStatus(int statusId);
         IEnumerable<CustomerOrderModel> GetNewCustomerOrders();
         IEnumerable<CustomerOrderModel> GetDoneCustomerOrders();
         IEnumerable<CustomerOrderModel> GetInProductionCustomerOrders();

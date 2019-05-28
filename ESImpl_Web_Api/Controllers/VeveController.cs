@@ -110,6 +110,16 @@ namespace ESImpl_Web_Api.Controllers
         {
             return this._context.GetCompletedCustomerOrders();
         }
+        /// <summary>
+        /// Returns all completed customer orders
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("order/status/{statusId:int}")]
+        public IEnumerable<CustomerOrderModel> GetCustomerOrdersByStatus(int statusId)
+        {
+            return this._context.GetCustomerOrdersByStatus(statusId);
+        }
 
         /// <summary>
         /// Deletes an customer order

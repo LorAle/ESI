@@ -141,7 +141,21 @@ namespace VEVE_Context
             }
             return new List<CustomerOrderModel>();
         }
-
+        public IEnumerable<CustomerOrderModel> GetCustomerOrdersByStatus(int statusId)
+        {
+            var ordersFromDB = _context.CUSTORDER.Where(x => x.STATUS == statusId);
+            if (ordersFromDB != null)
+            {
+                return ordersFromDB.Select(x => new CustomerOrderModel
+                {
+                    CUSTID = x.CUSTID,
+                    CUSTORDERID = x.CUSTORDERID,
+                    DATE = x.DATE,
+                    STATUS = x.STATUS
+                }).ToList();
+            }
+            return new List<CustomerOrderModel>();
+        }
         public IEnumerable<CustomerOrderModel> DeleteCustomerOrders(int orderId) {
             var ordersFromDB = _context.CUSTORDER.Where(x => x.CUSTORDERID == orderId).SingleOrDefault();
             if (ordersFromDB != null)
