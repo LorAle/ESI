@@ -365,6 +365,7 @@ namespace MAWI_Context
                         StockId = x.StockId,
                         ProductionId = x.ProductionId,
                         CustOrderId = x.CustOrderId,
+                        Amount = x.Amount,
                         State = x.State
                     }).ToList();
                 }
