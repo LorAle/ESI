@@ -212,6 +212,17 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
+        /// Liefert alle Bestaende zurueck
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("stock")]
+        public IEnumerable<StockModel> GetStocks()
+        {
+            return this._context.GetStocks();
+        }
+
+        /// <summary>
         /// gibt alle Abholauftrage zurueck
         /// </summary>
         /// <returns></returns>

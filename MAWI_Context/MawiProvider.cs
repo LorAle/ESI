@@ -314,7 +314,6 @@ namespace MAWI_Context
             _context.Entry(newStock).CurrentValues.SetValues(data);
             _context.SaveChanges();
             return new Stock{
-                StockId = newStock.StockId,
                 MaterialId = newStock.MaterialId,
                 Amount = newStock.Amount,
                 Whiteness = newStock.Whiteness,
@@ -323,6 +322,21 @@ namespace MAWI_Context
                 Ppml = newStock.Ppml,
                 DeltaE = newStock.DeltaE
             };
+        }
+
+        public IEnumerable<StockModel> GetStocks()
+        {
+            return _context.Stock.Select(x => new StockModel
+            {
+                StockId = x.StockId,
+                MaterialId = x.MaterialId,
+                Amount = x.Amount,
+                Whiteness = x.Whiteness,
+                Absorbency = x.Absorbency,
+                Viscosity = x.Viscosity,
+                Ppml = x.Ppml,
+                DeltaE = x.DeltaE
+            }).ToList();
         }
 
         public IEnumerable<CollectionOrderModel> GetCollectionOrders()
