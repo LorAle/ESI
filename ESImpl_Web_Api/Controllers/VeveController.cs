@@ -19,7 +19,7 @@ namespace ESImpl_Web_Api.Controllers
     {
         readonly IVeveProvider _context;
         /// <summary>
-        /// Vertrieb & Verkauf Schnittstelle
+        /// Vertrieb und Verkauf Schnittstelle
         /// </summary>
         /// <returns></returns>
         public VeveController()
@@ -48,7 +48,7 @@ namespace ESImpl_Web_Api.Controllers
             return this._context.GetCustomersById(customerId);
         }
         /// <summary>
-        /// Returns all single itmes of an order
+        /// Returns all single items of an order
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -70,7 +70,7 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
-        /// Returns all completed customer orders
+        /// Returns all orders by a specifique Status
         /// </summary>
         /// <returns></returns>
         [HttpGet]
