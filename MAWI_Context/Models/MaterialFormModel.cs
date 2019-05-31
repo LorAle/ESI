@@ -11,7 +11,6 @@ namespace MAWI_Context.Models
         public int MaterialId { get; set; }
         public int SupplierId { get; set; }
         public string Name { get; set; }
-        public Nullable<System.DateTime> DeliveryDate { get; set; }
         public string Description { get; set; }
         public Nullable<int> MinStock { get; set; }
         public Nullable<int> PackagingSize { get; set; }

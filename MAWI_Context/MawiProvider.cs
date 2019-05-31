@@ -80,7 +80,6 @@ namespace MAWI_Context
                     MaterialId = x.MaterialId,
                     SupplierId = x.SupplierId,
                     Name = x.Name,
-                    DeliveryDate = x.DeliveryDate,
                     Description = x.Description,
                     MinStock = x.MinStock,
                     PackagingSize = x.PackagingSize,
@@ -102,7 +101,6 @@ namespace MAWI_Context
                     MaterialId = x.MaterialId,
                     SupplierId = x.SupplierId,
                     Name = x.Name,
-                    DeliveryDate = x.DeliveryDate,
                     Description = x.Description,
                     MinStock = x.MinStock,
                     PackagingSize = x.PackagingSize,
@@ -125,7 +123,6 @@ namespace MAWI_Context
                 MaterialId = x.MaterialId,
                 SupplierId = x.SupplierId,
                 Name = x.Name,
-                DeliveryDate = x.DeliveryDate,
                 Description = x.Description,
                 MinStock = x.MinStock,
                 PackagingSize = x.PackagingSize,
@@ -232,8 +229,6 @@ namespace MAWI_Context
                 MaterialId = newMaterial.MaterialId,
                 SupplierId = newMaterial.SupplierId,
                 Name = newMaterial.Name,
-                DeliveryDate = newMaterial.DeliveryDate,
-                Description = newMaterial.Description,
                 MinStock = newMaterial.MinStock,
                 PackagingSize = newMaterial.PackagingSize,
                 Unit = newMaterial.Unit,
@@ -315,6 +310,7 @@ namespace MAWI_Context
             _context.SaveChanges();
             return new Stock{
                 MaterialId = newStock.MaterialId,
+                DeliveryDate = newStock.DeliveryDate,
                 Amount = newStock.Amount,
                 Whiteness = newStock.Whiteness,
                 Absorbency = newStock.Absorbency,
@@ -330,6 +326,7 @@ namespace MAWI_Context
             {
                 StockId = x.StockId,
                 MaterialId = x.MaterialId,
+                DeliveryDate = x.DeliveryDate,
                 Amount = x.Amount,
                 Whiteness = x.Whiteness,
                 Absorbency = x.Absorbency,

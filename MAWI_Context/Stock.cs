@@ -21,6 +21,7 @@ namespace MAWI_Context
     
         public int StockId { get; set; }
         public int MaterialId { get; set; }
+        public Nullable<System.DateTime> DeliveryDate { get; set; }
         public Nullable<int> Amount { get; set; }
         public Nullable<int> Whiteness { get; set; }
         public Nullable<decimal> Absorbency { get; set; }

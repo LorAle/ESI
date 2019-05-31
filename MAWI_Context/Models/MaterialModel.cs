@@ -11,7 +11,6 @@ namespace MAWI_Context.Models
         public int MaterialId { get; set; }
         public int SupplierId { get; set; }
         public string Name { get; set; }
-        public Nullable<System.DateTime> DeliveryDate { get; set; }
         public string Description { get; set; }
         public Nullable<int> MinStock { get; set; }
         public Nullable<int> PackagingSize { get; set; }
@@ -19,6 +18,6 @@ namespace MAWI_Context.Models
         public Nullable<decimal> Price { get; set; }
 
         public virtual Supplier Supplier { get; set; }
-        public virtual ICollection<StockModel> Stock { get; set; }
+        public virtual ICollection<Stock> Stock { get; set; }
     }
 }

@@ -23,7 +23,6 @@
           <Property Name="MaterialId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SupplierId" Type="int" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="45" Nullable="false" />
-          <Property Name="DeliveryDate" Type="date" />
           <Property Name="Description" Type="varchar" MaxLength="255" />
           <Property Name="MinStock" Type="int" />
           <Property Name="PackagingSize" Type="int" />
@@ -45,8 +44,9 @@
           <Key>
             <PropertyRef Name="StockId" />
           </Key>
-          <Property Name="StockId" Type="int" Nullable="false" />
+          <Property Name="StockId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MaterialId" Type="int" Nullable="false" />
+          <Property Name="DeliveryDate" Type="date" />
           <Property Name="Amount" Type="int" />
           <Property Name="Whiteness" Type="int" />
           <Property Name="Absorbency" Type="decimal" Precision="10" Scale="2" />
@@ -67,7 +67,7 @@
           <Property Name="Contactperson" Type="varchar" MaxLength="255" />
           <Property Name="Phone" Type="int" />
         </EntityType>
-        <Association Name="CollectionOrder_ibfk_1">
+        <Association Name="Collection_Stock_FK">
           <End Role="Stock" Type="Self.Stock" Multiplicity="0..1" />
           <End Role="CollectionOrder" Type="Self.CollectionOrder" Multiplicity="*" />
           <ReferentialConstraint>
@@ -92,14 +92,14 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="ProdProduct_CollOrder_FK">
-          <End Role="CollectionOrder" Type="Self.CollectionOrder" Multiplicity="1" />
+          <End Role="CollectionOrder" Type="Self.CollectionOrder" Multiplicity="0..1" />
           <End Role="ProducedProduct" Type="Self.ProducedProduct" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CollectionOrder">
               <PropertyRef Name="CollectionId" />
             </Principal>
             <Dependent Role="ProducedProduct">
-              <PropertyRef Name="CustOrderId" />
+              <PropertyRef Name="CollectionOrderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -121,7 +121,7 @@
           <EntitySet Name="ProducedProduct" EntityType="Self.ProducedProduct" Schema="MAWI" store:Type="Tables" />
           <EntitySet Name="Stock" EntityType="Self.Stock" Schema="MAWI" store:Type="Tables" />
           <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="MAWI" store:Type="Tables" />
-          <AssociationSet Name="CollectionOrder_ibfk_1" Association="Self.CollectionOrder_ibfk_1">
+          <AssociationSet Name="Collection_Stock_FK" Association="Self.Collection_Stock_FK">
             <End Role="Stock" EntitySet="Stock" />
             <End Role="CollectionOrder" EntitySet="CollectionOrder" />
           </AssociationSet>
@@ -148,7 +148,7 @@
           <EntitySet Name="ProducedProduct" EntityType="MAWIModel.ProducedProduct" />
           <EntitySet Name="Stock" EntityType="MAWIModel.Stock" />
           <EntitySet Name="Supplier" EntityType="MAWIModel.Supplier" />
-          <AssociationSet Name="CollectionOrder_ibfk_1" Association="MAWIModel.CollectionOrder_ibfk_1">
+          <AssociationSet Name="Collection_Stock_FK" Association="MAWIModel.Collection_Stock_FK">
             <End Role="Stock" EntitySet="Stock" />
             <End Role="CollectionOrder" EntitySet="CollectionOrder" />
           </AssociationSet>
@@ -175,7 +175,7 @@
           <Property Name="CustOrderId" Type="Int32" />
           <Property Name="Amount" Type="Int32" />
           <Property Name="State" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Stock" Relationship="MAWIModel.CollectionOrder_ibfk_1" FromRole="CollectionOrder" ToRole="Stock" />
+          <NavigationProperty Name="Stock" Relationship="MAWIModel.Collection_Stock_FK" FromRole="CollectionOrder" ToRole="Stock" />
           <NavigationProperty Name="ProducedProduct" Relationship="MAWIModel.ProdProduct_CollOrder_FK" FromRole="CollectionOrder" ToRole="ProducedProduct" />
         </EntityType>
         <EntityType Name="Material">
@@ -185,7 +185,6 @@
           <Property Name="MaterialId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SupplierId" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="DeliveryDate" Type="DateTime" />
           <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="MinStock" Type="Int32" />
           <Property Name="PackagingSize" Type="Int32" />
@@ -210,15 +209,16 @@
           <Key>
             <PropertyRef Name="StockId" />
           </Key>
-          <Property Name="StockId" Type="Int32" Nullable="false" />
+          <Property Name="StockId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MaterialId" Type="Int32" Nullable="false" />
+          <Property Name="DeliveryDate" Type="DateTime" />
           <Property Name="Amount" Type="Int32" />
           <Property Name="Whiteness" Type="Int32" />
           <Property Name="Absorbency" Type="Decimal" />
           <Property Name="Viscosity" Type="Decimal" />
           <Property Name="Ppml" Type="Int32" />
           <Property Name="DeltaE" Type="Decimal" />
-          <NavigationProperty Name="CollectionOrder" Relationship="MAWIModel.CollectionOrder_ibfk_1" FromRole="Stock" ToRole="CollectionOrder" />
+          <NavigationProperty Name="CollectionOrder" Relationship="MAWIModel.Collection_Stock_FK" FromRole="Stock" ToRole="CollectionOrder" />
           <NavigationProperty Name="Material" Relationship="MAWIModel.Stock_ibfk_1" FromRole="Stock" ToRole="Material" />
         </EntityType>
         <EntityType Name="Supplier">
@@ -235,7 +235,7 @@
           <Property Name="Phone" Type="Int32" />
           <NavigationProperty Name="Material" Relationship="MAWIModel.Material_FK_LieferId" FromRole="Supplier" ToRole="Material" />
         </EntityType>
-        <Association Name="CollectionOrder_ibfk_1">
+        <Association Name="Collection_Stock_FK">
           <End Type="MAWIModel.Stock" Role="Stock" Multiplicity="0..1" />
           <End Type="MAWIModel.CollectionOrder" Role="CollectionOrder" Multiplicity="*" />
           <ReferentialConstraint>
@@ -248,14 +248,14 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="ProdProduct_CollOrder_FK">
-          <End Type="MAWIModel.CollectionOrder" Role="CollectionOrder" Multiplicity="1" />
+          <End Type="MAWIModel.CollectionOrder" Role="CollectionOrder" Multiplicity="0..1" />
           <End Type="MAWIModel.ProducedProduct" Role="ProducedProduct" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CollectionOrder">
               <PropertyRef Name="CollectionId" />
             </Principal>
             <Dependent Role="ProducedProduct">
-              <PropertyRef Name="CustOrderId" />
+              <PropertyRef Name="CollectionOrderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -309,7 +309,6 @@
                 <ScalarProperty Name="PackagingSize" ColumnName="PackagingSize" />
                 <ScalarProperty Name="MinStock" ColumnName="MinStock" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
                 <ScalarProperty Name="MaterialId" ColumnName="MaterialId" />
@@ -336,6 +335,7 @@
                 <ScalarProperty Name="Absorbency" ColumnName="Absorbency" />
                 <ScalarProperty Name="Whiteness" ColumnName="Whiteness" />
                 <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
                 <ScalarProperty Name="MaterialId" ColumnName="MaterialId" />
                 <ScalarProperty Name="StockId" ColumnName="StockId" />
               </MappingFragment>
