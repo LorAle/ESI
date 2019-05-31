@@ -68,48 +68,7 @@ namespace ESImpl_Web_Api.Controllers
         {
             return this._context.GetCustomerOrders();
         }
-        /// <summary>
-        /// Returns all new customer orders
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("order/new")]
-        public IEnumerable<CustomerOrderModel> GetNewCustomerOrders()
-        {
-            return this._context.GetNewCustomerOrders();
-        }
-        /// <summary>
-        /// Returns all approved customer orders
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("order/done")]
-        public IEnumerable<CustomerOrderModel> GetDoneCustomerOrders()
-        {
-            return this._context.GetDoneCustomerOrders();
-        }
 
-        /// <summary>
-        /// Returns all in production customer orders
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("order/inProduction")]
-        public IEnumerable<CustomerOrderModel> GetInProductionCustomerOrders()
-        {
-            return this._context.GetInProductionCustomerOrders();
-        }
-
-        /// <summary>
-        /// Returns all completed customer orders
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("order/completed")]
-        public IEnumerable<CustomerOrderModel> GetCompletedCustomerOrders()
-        {
-            return this._context.GetCompletedCustomerOrders();
-        }
         /// <summary>
         /// Returns all completed customer orders
         /// </summary>

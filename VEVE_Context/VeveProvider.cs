@@ -79,68 +79,7 @@ namespace VEVE_Context
             }
             return new List<CustomerOrderModel>();
         }
-        public IEnumerable<CustomerOrderModel> GetNewCustomerOrders()
-        {
-            var ordersFromDB = _context.CUSTORDER.Where(x => x.STATUS == 1);
-            if (ordersFromDB != null)
-            {
-                return ordersFromDB.Select(x => new CustomerOrderModel
-                {
-                    CUSTID = x.CUSTID,
-                    CUSTORDERID = x.CUSTORDERID,
-                    DATE = x.DATE,
-                    STATUS = x.STATUS
-                }).ToList();
-            }
-            return new List<CustomerOrderModel>();
-        }
-        public IEnumerable<CustomerOrderModel> GetDoneCustomerOrders()
-        {
-            var ordersFromDB = _context.CUSTORDER.Where(x => x.STATUS == 2);
-            if (ordersFromDB != null)
-            {
-                return ordersFromDB.Select(x => new CustomerOrderModel
-                {
-                    CUSTID = x.CUSTID,
-                    CUSTORDERID = x.CUSTORDERID,
-                    DATE = x.DATE,
-                    STATUS = x.STATUS
-                }).ToList();
-            }
-            return new List<CustomerOrderModel>();
-        }
 
-        public IEnumerable<CustomerOrderModel> GetInProductionCustomerOrders()
-        {
-            var ordersFromDB = _context.CUSTORDER.Where(x => x.STATUS == 3);
-            if (ordersFromDB != null)
-            {
-                return ordersFromDB.Select(x => new CustomerOrderModel
-                {
-                    CUSTID = x.CUSTID,
-                    CUSTORDERID = x.CUSTORDERID,
-                    DATE = x.DATE,
-                    STATUS = x.STATUS
-                }).ToList();
-            }
-            return new List<CustomerOrderModel>();
-        }
-
-        public IEnumerable<CustomerOrderModel> GetCompletedCustomerOrders()
-        {
-            var ordersFromDB = _context.CUSTORDER.Where(x => x.STATUS == 4);
-            if (ordersFromDB != null)
-            {
-                return ordersFromDB.Select(x => new CustomerOrderModel
-                {
-                    CUSTID = x.CUSTID,
-                    CUSTORDERID = x.CUSTORDERID,
-                    DATE = x.DATE,
-                    STATUS = x.STATUS
-                }).ToList();
-            }
-            return new List<CustomerOrderModel>();
-        }
         public IEnumerable<CustomerOrderModel> GetCustomerOrdersByStatus(int statusId)
         {
             var ordersFromDB = _context.CUSTORDER.Where(x => x.STATUS == statusId);
