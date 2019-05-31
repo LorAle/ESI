@@ -339,6 +339,12 @@ namespace MAWI_Context
             }).ToList();
         }
 
+        public int GetTotalStockForMaterial(int materialId)
+        {
+            var stockFromDB = _context.Stock.Where(x => x.MaterialId == materialId);
+            return stockFromDB.Sum(x => x.Amount).Value;
+        }
+
         public IEnumerable<CollectionOrderModel> GetCollectionOrders()
         {
             return _context.CollectionOrder.Select(x => new CollectionOrderModel

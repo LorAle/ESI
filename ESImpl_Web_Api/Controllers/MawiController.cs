@@ -223,6 +223,18 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("stock/{materialId:int}")]
+        public int GetTotalStockForMaterial(int materialId)
+        {
+            return this._context.GetTotalStockForMaterial(materialId);
+        }
+
+        /// <summary>
         /// gibt alle Abholauftrage zurueck
         /// </summary>
         /// <returns></returns>

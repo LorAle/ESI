@@ -26,6 +26,7 @@ namespace MAWI_Context
         IEnumerable<QualityModel> GetQualitytById(int stockId);
         Stock CreateStockAndQuality(StockFormModel data);
         IEnumerable<StockModel> GetStocks();
+        int GetTotalStockForMaterial(int materialId);
         IEnumerable<SupplierModel> CreateSupplier(SupplierFormModel data);
         IEnumerable<CollectionOrderModel> GetCollectionOrders();
         IEnumerable<CollectionOrderModel> GetCollectionOrdersByState(String state);
