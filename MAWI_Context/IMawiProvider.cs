@@ -11,7 +11,10 @@ namespace MAWI_Context
     {
         IEnumerable<SupplierModel> GetSuppliers();
         IEnumerable<String> GetSupplierNames();
+        IEnumerable<SupplierModel> GetSupplierById(int supplierId);
         IEnumerable<MaterialModel> GetMaterial();
+        IEnumerable<MaterialModel> GetMaterialById(int materialId);
+        IEnumerable<MaterialModel> GetMaterialBySupplierId(int supplierId);
         MaterialModel CreateMaterial(MaterialFormModel data);
         IEnumerable<ProducedProductModel> GetProducedProduct();
         IEnumerable<ProducedProductModel> GetProducedProductByCustId(int customerOrderId);
@@ -22,6 +25,7 @@ namespace MAWI_Context
         bool CollectMaterial(int amount, int? materialId, int? producedProductId, int? customerOrderId);
         IEnumerable<QualityModel> GetQualitytById(int stockId);
         Stock CreateStockAndQuality(StockFormModel data);
+        IEnumerable<StockModel> GetStocks();
         IEnumerable<SupplierModel> CreateSupplier(SupplierFormModel data);
         IEnumerable<CollectionOrderModel> GetCollectionOrders();
         IEnumerable<CollectionOrderModel> GetCollectionOrdersByState(String state);

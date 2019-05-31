@@ -48,6 +48,70 @@ namespace MAWI_Context
                 Phone = newSupplier.Phone
             };
         }
+        public IEnumerable<SupplierModel> GetSupplierById(int supplierId)
+        {
+
+            var supplierFromDB = _context.Supplier.Where(x => x.SupplierId == supplierId);
+            if (supplierFromDB != null)
+            {
+                return supplierFromDB.Select(x => new SupplierModel
+                {
+                    SupplierId = x.SupplierId,
+                    Name = x.Name,
+                    Address = x.Address,
+                    PLZ = x.PLZ,
+                    City = x.City,
+                    Email = x.Email,
+                    Contactperson = x.Contactperson,
+                    Phone = x.Phone
+                }).ToList();
+            }
+            return new List<SupplierModel>();
+        }
+
+        public IEnumerable<MaterialModel> GetMaterialById(int materialId)
+        {
+
+            var materialFromDB = _context.Material.Where(x => x.MaterialId == materialId);
+            if (materialFromDB != null)
+            {
+                return materialFromDB.Select(x => new MaterialModel
+                {
+                    MaterialId = x.MaterialId,
+                    SupplierId = x.SupplierId,
+                    Name = x.Name,
+                    DeliveryDate = x.DeliveryDate,
+                    Description = x.Description,
+                    MinStock = x.MinStock,
+                    PackagingSize = x.PackagingSize,
+                    Unit = x.Unit,
+                    Price = x.Price
+                }).ToList();
+            }
+            return new List<MaterialModel>();
+        }
+
+        public IEnumerable<MaterialModel> GetMaterialBySupplierId(int supplierId)
+        {
+
+            var materialFromDB = _context.Material.Where(x => x.SupplierId == supplierId);
+            if (materialFromDB != null)
+            {
+                return materialFromDB.Select(x => new MaterialModel
+                {
+                    MaterialId = x.MaterialId,
+                    SupplierId = x.SupplierId,
+                    Name = x.Name,
+                    DeliveryDate = x.DeliveryDate,
+                    Description = x.Description,
+                    MinStock = x.MinStock,
+                    PackagingSize = x.PackagingSize,
+                    Unit = x.Unit,
+                    Price = x.Price
+                }).ToList();
+            }
+            return new List<MaterialModel>();
+        }
 
         public IEnumerable<String> GetSupplierNames()
         {
@@ -250,7 +314,6 @@ namespace MAWI_Context
             _context.Entry(newStock).CurrentValues.SetValues(data);
             _context.SaveChanges();
             return new Stock{
-                StockId = newStock.StockId,
                 MaterialId = newStock.MaterialId,
                 Amount = newStock.Amount,
                 Whiteness = newStock.Whiteness,
@@ -261,6 +324,21 @@ namespace MAWI_Context
             };
         }
 
+        public IEnumerable<StockModel> GetStocks()
+        {
+            return _context.Stock.Select(x => new StockModel
+            {
+                StockId = x.StockId,
+                MaterialId = x.MaterialId,
+                Amount = x.Amount,
+                Whiteness = x.Whiteness,
+                Absorbency = x.Absorbency,
+                Viscosity = x.Viscosity,
+                Ppml = x.Ppml,
+                DeltaE = x.DeltaE
+            }).ToList();
+        }
+
         public IEnumerable<CollectionOrderModel> GetCollectionOrders()
         {
             return _context.CollectionOrder.Select(x => new CollectionOrderModel
@@ -269,6 +347,7 @@ namespace MAWI_Context
                 StockId  = x.StockId,
                 ProductionId = x.ProductionId,
                 CustOrderId = x.CustOrderId,
+                Amount = x.Amount,
                 State = x.State
             }).ToList();
         }
@@ -286,6 +365,7 @@ namespace MAWI_Context
                         StockId = x.StockId,
                         ProductionId = x.ProductionId,
                         CustOrderId = x.CustOrderId,
+                        Amount = x.Amount,
                         State = x.State
                     }).ToList();
                 }

@@ -42,6 +42,18 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
+        /// Gibt die Lieferanten anhand der Id zurueck
+        /// </summary>
+        /// <param name="supplierId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("suppliers/{supplierId:int}")]
+        public IEnumerable<SupplierModel> GetSupplierById(int supplierId)
+        {
+            return this._context.GetSupplierById(supplierId);
+        }
+
+        /// <summary>
         /// Lieferanten anlegen
         /// </summary>
         /// <param name="data"></param>
@@ -136,6 +148,30 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
+        /// gibt MAterial anhand der ID zurueck
+        /// </summary>
+        /// <param name="materialId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("material/{materialId:int}")]
+        public IEnumerable<MaterialModel> GetMaterialById(int materialId)
+        {
+            return this._context.GetMaterialById(materialId);
+        }
+
+        /// <summary>
+        /// gibt Material anhand der SupplierID zurueck
+        /// </summary>
+        /// <param name="supplierId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("material/supplier/{supplierId:int}")]
+        public IEnumerable<MaterialModel> GetMaterialBySupplierId(int supplierId)
+        {
+            return this._context.GetMaterialBySupplierId(supplierId);
+        }
+
+        /// <summary>
         /// SST zu Produktion - Material bereitstellen
         /// Fuehrt update auf DB aus
         /// </summary>
@@ -173,6 +209,17 @@ namespace ESImpl_Web_Api.Controllers
         public Stock CreateStockAndQuality(StockFormModel data)
         {
             return this._context.CreateStockAndQuality(data);
+        }
+
+        /// <summary>
+        /// Liefert alle Bestaende zurueck
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("stock")]
+        public IEnumerable<StockModel> GetStocks()
+        {
+            return this._context.GetStocks();
         }
 
         /// <summary>
