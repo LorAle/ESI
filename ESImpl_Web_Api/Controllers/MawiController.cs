@@ -223,7 +223,7 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Gibt den aktuellen Lagerestand fuer ein Material zurueck
         /// </summary>
         /// <param name="materialId"></param>
         /// <returns></returns>
