@@ -339,7 +339,14 @@ namespace MAWI_Context
         public int GetTotalStockForMaterial(int materialId)
         {
             var stockFromDB = _context.Stock.Where(x => x.MaterialId == materialId);
-            return stockFromDB.Sum(x => x.Amount).Value;
+            if (stockFromDB != null)
+            {
+                if (stockFromDB.Any(x => x.Amount != null))
+                    return stockFromDB.Sum(x => x.Amount).Value;
+                else
+                    return 0;
+            }
+            else return 0;
         }
 
         public IEnumerable<CollectionOrderModel> GetCollectionOrders()
