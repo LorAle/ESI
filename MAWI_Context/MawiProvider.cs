@@ -364,6 +364,7 @@ namespace MAWI_Context
                     Unit = m.Unit,
                     PackagingSize = m.PackagingSize,
                     Price = m.Price,
+                    // wenn Amount nicht null ist, gibt es die Summe zurueck, ansonsten 0
                     ActualStock = (s.Any(x => x.Amount != null) ? s.Sum(x => x.Amount).Value : 0)          
             });
         }
