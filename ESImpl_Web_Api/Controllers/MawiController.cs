@@ -235,6 +235,16 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
+        /// gibt Materialen mit aktuellem Bestand zurueck
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("material/stock")]
+        public IEnumerable<MaterialStockFormModel> GetMaterialStockFormModel()
+        {
+            return this._context.GetMaterialStockFormModel();
+        }
+        /// <summary>
         /// gibt alle Abholauftrage zurueck
         /// </summary>
         /// <returns></returns>

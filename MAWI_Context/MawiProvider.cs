@@ -349,6 +349,25 @@ namespace MAWI_Context
             else return 0;
         }
 
+        public IEnumerable<MaterialStockFormModel> GetMaterialStockFormModel()
+        {
+            return _context.Material.GroupJoin(_context.Stock,
+                m => m.MaterialId,
+                s => s.MaterialId,
+                (m,s) => new MaterialStockFormModel
+                {
+                    MaterialId = m.MaterialId,
+                    SupplierId = m.SupplierId,
+                    Name = m.Name,
+                    Description = m.Description,
+                    MinStock = m.MinStock,
+                    Unit = m.Unit,
+                    PackagingSize = m.PackagingSize,
+                    Price = m.Price,
+                    ActualStock = (s.Any(x => x.Amount != null) ? s.Sum(x => x.Amount).Value : 0)          
+            });
+        }
+
         public IEnumerable<CollectionOrderModel> GetCollectionOrders()
         {
             return _context.CollectionOrder.Select(x => new CollectionOrderModel
