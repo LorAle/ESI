@@ -351,7 +351,7 @@ namespace MAWI_Context
             else return 0;
         }
 
-        public IEnumerable<StockMaterialModel> GetStockWithDescription()
+        public IEnumerable<StockMaterialModel> GetStockWithName()
         {
             return _context.Stock.Join(_context.Material,
                 s => s.MaterialId,
@@ -360,7 +360,7 @@ namespace MAWI_Context
                 {
                     MaterialId = s.MaterialId,
                     StockId = s.StockId,
-                    Description = m.Description,
+                    Name = m.Name,
                     DeliveryDate = s.DeliveryDate,
                     Amount = s.Amount,
                     Whiteness = s.Whiteness,

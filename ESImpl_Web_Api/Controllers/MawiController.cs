@@ -227,10 +227,10 @@ namespace ESImpl_Web_Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("stockWithDescription")]
-        public IEnumerable<StockMaterialModel> GetStockWithDescription()
+        [Route("stockWithName")]
+        public IEnumerable<StockMaterialModel> GetStockWithName()
         {
-            return this._context.GetStockWithDescription();
+            return this._context.GetStockWithName();
         }
 
         /// <summary>

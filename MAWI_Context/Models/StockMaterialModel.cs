@@ -10,7 +10,7 @@ namespace MAWI_Context.Models
     {
         public int StockId { get; set; }
         public int MaterialId { get; set; }
-        public string Description { get; set; }
+        public string Name { get; set; }
         public Nullable<System.DateTime> DeliveryDate { get; set; }
         public Nullable<int> Amount { get; set; }
         public Nullable<int> Whiteness { get; set; }
