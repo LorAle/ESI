@@ -161,30 +161,32 @@ namespace MAWI_Context
         {
             if (type != null && amount > 0)
             {
-                // auf die If/Else kann verzichtet werden, wenn man sich darauf einigt,
-                // dass immer type immer auf Wert in Feld Name matched.
-                //  if (type == "Shirt")
-                //{
-                var materialFromDB = _context.Material.Where(x => (x.Name.Contains(type) && x.MinStock > amount));
-                    if (materialFromDB != null)
+                var matStock = GetMaterialStockFormModel();
+                var mat = new MaterialStockFormModel();
+                foreach (MaterialStockFormModel x in matStock)
+                {
+                    // prueft ob es Material mit ausreichend Bestand vom entsprechenden Typ gibt
+                    if (x.ActualStock >= amount && x.Name.Contains(type))
                     {
-                        // holt sich ersten Eintrag auf den Bedingung zutrifft
-                        if (materialFromDB.First() != null)
-                        {
-                        var firstMaterial = materialFromDB.First();
-                        // Berechnet neue Bestand
-                        int newStock = firstMaterial.MinStock.Value - amount;
-                            firstMaterial.MinStock = newStock;
-
-                            // Eintrag in DB updaten
-                            _context.Entry(firstMaterial).CurrentValues.SetValues(newStock);
-                            _context.SaveChanges();
-                            return true;
-                        }
+                        mat = x;
+                        break;
                     }
+                    // gibt false zurueck, falls es kein Material mit ausreichend Bestand gibt
+                    else return false;
+                }
+                var stockModel = _context.Stock.Where(x => x.MaterialId == mat.MaterialId && x.Amount > amount).First();
+                var collModel = new CollectionOrderFormModel
+                {
+                    Amount = amount,
+                    OrderType = "Supply",
+                    StockId = stockModel.StockId
+                };
+                CreateCollectionOrder(collModel);
+                return true;
             }
             return false;
         }
+        
 
         public bool CollectMaterial(int amount, int? materialId, int? productionId, int? customerOrderId)
         {
@@ -378,6 +380,7 @@ namespace MAWI_Context
                 ProductionId = x.ProductionId,
                 CustOrderId = x.CustOrderId,
                 Amount = x.Amount,
+                OrderType = x.OrderType,
                 State = x.State
             }).ToList();
         }
@@ -396,6 +399,7 @@ namespace MAWI_Context
                         ProductionId = x.ProductionId,
                         CustOrderId = x.CustOrderId,
                         Amount = x.Amount,
+                        OrderType = x.OrderType,
                         State = x.State
                     }).ToList();
                 }
@@ -408,6 +412,7 @@ namespace MAWI_Context
             bool valid = false;
             CollectionOrder newCollectionOrder = new CollectionOrder();
             newCollectionOrder.State = "New";
+            newCollectionOrder.OrderType = "Collect";
             // Falls Rohmaterial wieder eingelagert werden muss, muss geprueft werden ob es StockId existiert
             if (data.StockId != null || data.StockId != 0)
             {
@@ -420,6 +425,7 @@ namespace MAWI_Context
             }
             if (valid)
             {
+                data.OrderType = "Collect";
                 _context.CollectionOrder.Add(newCollectionOrder);
                 _context.Entry(newCollectionOrder).CurrentValues.SetValues(data);
                 _context.SaveChanges();
@@ -430,6 +436,7 @@ namespace MAWI_Context
                     ProductionId = newCollectionOrder.ProductionId,
                     CustOrderId = newCollectionOrder.CustOrderId,
                     Amount = newCollectionOrder.Amount,
+                    OrderType = newCollectionOrder.OrderType,
                     State = newCollectionOrder.State
                 };
             }
@@ -443,30 +450,35 @@ namespace MAWI_Context
             bool valid = false;
 
             CollectionOrder colOrder = _context.CollectionOrder.Find(collectionOrderId);
-            var collectionOrderFromDB = _context.CollectionOrder.Where(x => x.CollectionId == collectionOrderId);
+            //var collectionOrderFromDB = _context.CollectionOrder.Where(x => x.CollectionId == collectionOrderId);
             if (colOrder != null)
             {
                 var productionId = colOrder.ProductionId;
                 var stockId = colOrder.StockId;
-                if (productionId != null)
+                var orderType = colOrder.OrderType;
+                if (orderType != null)
                 {
-                    valid = updateProducedProductFromCollectionOrder(colOrder, productionId);
-                }
-                if (stockId != null)
-                {
-                    valid = updateStockFromCollectionOrder(colOrder, stockId);
+                    if (productionId != null)
+                    {
+                        valid = updateProducedProductFromCollectionOrder(colOrder, productionId);
+                    }
+                    if (stockId != null)
+                    {
+                        valid = updateStockFromCollectionOrder(colOrder, stockId, orderType);
+                    }
+
+                    // wenn Stock-Tabelle oder Produced-Product-Tabelle geupdatet wurden, dann true
+                    if (valid)
+                    {
+                        var state = colOrder.State = "Done";
+                        // Speichert Aenderungen
+                        _context.Entry(colOrder).CurrentValues.SetValues(state);
+                        _context.SaveChanges();
+
+                        return true;
+                    }
                 }
 
-                // wenn Stock-Tabelle oder Produced-Product-Tabelle geupdatet wurden, dann true
-                if (valid)
-                {
-                    var state = colOrder.State = "Done";
-                    // Speichert Aenderungen
-                    _context.Entry(colOrder).CurrentValues.SetValues(state);
-                    _context.SaveChanges();
-
-                    return true;
-                }
             }
             return false;
         }
@@ -491,10 +503,11 @@ namespace MAWI_Context
             return false;
         }
 
-        private bool updateStockFromCollectionOrder(CollectionOrder colOrder, int? stockId)
+        private bool updateStockFromCollectionOrder(CollectionOrder colOrder, int? stockId, String orderType)
         {
-            if (colOrder != null && stockId != null)
+            if (colOrder != null)
             {
+                int? newAmount = 0;
                 Stock stockFromDB = _context.Stock.Find(stockId);
                 if (stockFromDB == null)
                 {
@@ -502,8 +515,15 @@ namespace MAWI_Context
                 }
                 // holt sich aktuellen Amount 
                 var amount = colOrder.Amount.GetValueOrDefault();
-                // erhoeht Amount um den neu zu eingelagerten Bestand
-                var newAmount = stockFromDB.Amount = stockFromDB.Amount.GetValueOrDefault() + amount;
+                if (orderType == "Collect")
+                {
+                    // erhoeht Amount um den neu zu eingelagerten Bestand
+                    newAmount = stockFromDB.Amount = stockFromDB.Amount.GetValueOrDefault() + amount;
+                } else if(orderType == "Supply")
+                {
+                    // verringert Amount um den neu zu eingelagerten Bestand
+                    newAmount = stockFromDB.Amount = stockFromDB.Amount.GetValueOrDefault() - amount;
+                }
                 // Speichert Aenderungen
                 _context.Entry(stockFromDB).CurrentValues.SetValues(newAmount);
                 _context.SaveChanges();

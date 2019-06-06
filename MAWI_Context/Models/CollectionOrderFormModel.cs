@@ -12,6 +12,7 @@ namespace MAWI_Context.Models
         public Nullable<int> ProductionId { get; set; }
         public Nullable<int> CustOrderId { get; set; }
         public Nullable<int> Amount { get; set; }
+        public string OrderType { get; set; }
         //public string State { get; set; }
 
     }

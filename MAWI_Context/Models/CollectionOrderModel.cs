@@ -15,6 +15,7 @@ namespace MAWI_Context.Models
         public Nullable<int> CustOrderId { get; set; }
         public Nullable<int> Amount { get; set; }
         public string State { get; set; }
+        public string OrderType { get; set; }
 
         public virtual Stock Stock { get; set; }
         public virtual ICollection<ProducedProduct> ProducedProduct { get; set; }

@@ -182,6 +182,7 @@ namespace ESImpl_Web_Api.Controllers
         [Route("order/supply")]
         public bool SupplyMaterial(String  type, int amount)
         {
+
             return this._context.SupplyMaterial(type, amount);
         }
 
@@ -212,7 +213,7 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
-        /// Liefert alle Bestaende zurueck
+        /// Liefert alle Eintrage in Stock zurueck
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -223,7 +224,7 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
-        /// Gibt den aktuellen Lagerestand fuer ein Material zurueck
+        /// Gibt den aktuellen Lagerestand fuer ein Material andhand der ID zurueck
         /// </summary>
         /// <param name="materialId"></param>
         /// <returns></returns>
@@ -278,12 +279,12 @@ namespace ESImpl_Web_Api.Controllers
         }
 
         /// <summary>
-        /// Abholauftrag anlegen
+        /// SST Produktion - Abholauftrag erzeugen fuer Roh-/Fertigmaterial
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("collectionOrder")]
+        [Route("order/collect")]
         public CollectionOrder CreateCollectionOrder(CollectionOrderFormModel data)
         {
             return this._context.CreateCollectionOrder(data);
