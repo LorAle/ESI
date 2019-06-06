@@ -351,6 +351,27 @@ namespace MAWI_Context
             else return 0;
         }
 
+        public IEnumerable<StockMaterialModel> GetStockWithDescription()
+        {
+            return _context.Stock.Join(_context.Material,
+                s => s.MaterialId,
+                m => m.MaterialId,
+                (s,m) => new StockMaterialModel
+                {
+                    MaterialId = s.MaterialId,
+                    StockId = s.StockId,
+                    Description = m.Description,
+                    DeliveryDate = s.DeliveryDate,
+                    Amount = s.Amount,
+                    Whiteness = s.Whiteness,
+                    Absorbency = s.Absorbency,
+                    Viscosity = s.Viscosity,
+                    Ppml = s.Ppml,
+                    DeltaE = s.DeltaE
+
+                }
+                );
+        }
         public IEnumerable<MaterialStockFormModel> GetMaterialStockFormModel()
         {
             return _context.Material.GroupJoin(_context.Stock,

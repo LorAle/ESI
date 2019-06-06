@@ -86,6 +86,7 @@
     <Compile Include="Models\MaterialModel.cs" />
     <Compile Include="Models\QualityModel.cs" />
     <Compile Include="Models\StockFormModel.cs" />
+    <Compile Include="Models\StockMaterialModel.cs" />
     <Compile Include="Models\StockModel.cs" />
     <Compile Include="Models\SupplierFormModel.cs" />
     <Compile Include="Models\SupplierModel.cs" />

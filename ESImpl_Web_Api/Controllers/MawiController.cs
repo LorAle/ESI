@@ -222,6 +222,16 @@ namespace ESImpl_Web_Api.Controllers
         {
             return this._context.GetStocks();
         }
+        /// <summary>
+        /// Liefert alle Eintrage in Stock zurueck mit Beschreibung
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("stockWithDescription")]
+        public IEnumerable<StockMaterialModel> GetStockWithDescription()
+        {
+            return this._context.GetStockWithDescription();
+        }
 
         /// <summary>
         /// Gibt den aktuellen Lagerestand fuer ein Material andhand der ID zurueck
