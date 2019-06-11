@@ -31,9 +31,9 @@ namespace ESImpl_Web_Api.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("")]
-        public IEnumerable<ProductionOrderModel> GetProductionOrders()
+        public IEnumerable<ProductionOrderModel> GetProductionOrders(Nullable<int> statusId=null)
         {
-            return this._context.GetProductionOrders();
+            return this._context.GetProductionOrders(statusId);
         }
 
         /// <summary>

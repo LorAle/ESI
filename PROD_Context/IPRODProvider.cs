@@ -9,7 +9,7 @@ namespace PROD_Context
 {
     public interface IProdProvider
     {
-        IEnumerable<ProductionOrderModel> GetProductionOrders();
+        IEnumerable<ProductionOrderModel> GetProductionOrders(Nullable<int> statusId);
 
         ProductionOrderModel GetProductionOrder(int orderId);
         ProductionOrderModel CreateProductionOrder(ProductionOrderFormModel data);

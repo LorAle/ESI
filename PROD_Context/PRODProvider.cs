@@ -15,21 +15,41 @@ namespace PROD_Context
         {
             _context = context;
         }
-        public IEnumerable<ProductionOrderModel> GetProductionOrders()
+        public IEnumerable<ProductionOrderModel> GetProductionOrders(Nullable<int> statusId)
         {
-            return _context.ProductionOrder.Select(x => new ProductionOrderModel
+            if (statusId != null)
             {
-                Id = x.Id,
-                Amount = x.Amount,
-                Color = x.Color,
-                CustomerOrderId = x.CustomerOrderId,
-                DeliveryDate = x.DeliveryDate,
-                Motiv = x.Motiv,
-                OrderDate = x.OrderDate,
-                OrderItem = x.OrderItem,
-                OrderPosition = x.OrderPosition,
-                ProductionStatusId = x.ProductionStatusId
-            }).OrderBy(x=> x.OrderPosition).ToList();
+                return _context.ProductionOrder
+                    .Where(x => x.ProductionStatusId == statusId)
+                    .Select(x => new ProductionOrderModel
+                    {
+                        Id = x.Id,
+                        Amount = x.Amount,
+                        Color = x.Color,
+                        CustomerOrderId = x.CustomerOrderId,
+                        DeliveryDate = x.DeliveryDate,
+                        Motiv = x.Motiv,
+                        OrderDate = x.OrderDate,
+                        OrderItem = x.OrderItem,
+                        OrderPosition = x.OrderPosition,
+                        ProductionStatusId = x.ProductionStatusId
+                    }).OrderBy(x => x.OrderPosition).ToList();
+            } else
+            {
+                return _context.ProductionOrder.Select(x => new ProductionOrderModel
+                {
+                    Id = x.Id,
+                    Amount = x.Amount,
+                    Color = x.Color,
+                    CustomerOrderId = x.CustomerOrderId,
+                    DeliveryDate = x.DeliveryDate,
+                    Motiv = x.Motiv,
+                    OrderDate = x.OrderDate,
+                    OrderItem = x.OrderItem,
+                    OrderPosition = x.OrderPosition,
+                    ProductionStatusId = x.ProductionStatusId
+                }).OrderBy(x => x.OrderPosition).ToList();
+            }
         }
         public ProductionOrderModel GetProductionOrder(int orderId)
         {
@@ -67,7 +87,7 @@ namespace PROD_Context
                 OrderDate = newOrder.OrderDate,
                 OrderItem = newOrder.OrderItem,
                 OrderPosition = newOrder.OrderPosition,
-                ProductionStatusId = newOrder.ProductionStatusId
+                ProductionStatusId = 1
             };
         }
 
@@ -106,11 +126,12 @@ namespace PROD_Context
 
         public IEnumerable<ProductionOrderModel> SortProductionOrders()
         {
-            var orders = _context.ProductionOrder.Where(x => x.ProductionStatus.Id == 1).ToList();
+            var orders = _context.ProductionOrder.Where(x => x.ProductionStatus.Id == 1 || x.ProductionStatusId == 2).ToList();
             orders = orders.OrderBy(x => x.DeliveryDate).ThenBy(x => Color.FromArgb(Convert.ToInt32(x.Color.Substring(1), 16)).GetBrightness()).ToList();
             for (int i = 1; i <= orders.Count; i++)
             {
                 orders[i-1].OrderPosition = i;
+                orders[i-1].ProductionStatusId = 2;
             }
             _context.SaveChanges();
 
@@ -125,7 +146,7 @@ namespace PROD_Context
                 OrderDate = x.OrderDate,
                 OrderItem = x.OrderItem,
                 OrderPosition = x.OrderPosition,
-                ProductionStatusId = x.ProductionStatusId
+                ProductionStatusId = x.ProductionStatusId,
             }).ToList();
         }
     }
