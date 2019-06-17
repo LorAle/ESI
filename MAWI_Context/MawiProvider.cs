@@ -433,7 +433,7 @@ namespace MAWI_Context
             bool valid = false;
             CollectionOrder newCollectionOrder = new CollectionOrder();
             newCollectionOrder.State = "New";
-            newCollectionOrder.OrderType = "Collect";
+
             // Falls Rohmaterial wieder eingelagert werden muss, muss geprueft werden ob es StockId existiert
             if (data.StockId != null || data.StockId != 0)
             {
@@ -446,7 +446,6 @@ namespace MAWI_Context
             }
             if (valid)
             {
-                data.OrderType = "Collect";
                 _context.CollectionOrder.Add(newCollectionOrder);
                 _context.Entry(newCollectionOrder).CurrentValues.SetValues(data);
                 _context.SaveChanges();

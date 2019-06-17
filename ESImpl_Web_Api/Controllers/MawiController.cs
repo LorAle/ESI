@@ -297,6 +297,7 @@ namespace ESImpl_Web_Api.Controllers
         [Route("order/collect")]
         public CollectionOrder CreateCollectionOrder(CollectionOrderFormModel data)
         {
+            data.OrderType = "Collect";
             return this._context.CreateCollectionOrder(data);
         }
 
