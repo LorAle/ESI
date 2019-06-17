@@ -166,13 +166,13 @@ namespace MAWI_Context
                 foreach (MaterialStockFormModel x in matStock)
                 {
                     // prueft ob es Material mit ausreichend Bestand vom entsprechenden Typ gibt
-                    if (x.ActualStock >= amount && x.Name.Contains(type))
+                    if (x.ActualStock >= amount && x.Name.ToLower().Contains(type.ToLower()))
                     {
                         mat = x;
                         break;
                     }
                     // gibt false zurueck, falls es kein Material mit ausreichend Bestand gibt
-                    else return false;
+                    //else return false;
                 }
                 var stockModel = _context.Stock.Where(x => x.MaterialId == mat.MaterialId && x.Amount > amount).First();
                 var collModel = new CollectionOrderFormModel
